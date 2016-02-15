@@ -48,12 +48,14 @@ $(document).ready(
     	cursorborderradius: "0px"
     });
 
-  }
+  
+  });
 
-);
+ 
+
+
 
 new WOW().init();
-
 
     
 /*Preloader*/
