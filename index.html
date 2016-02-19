@@ -119,7 +119,6 @@
 	<section class="services" id="SERVICE">
 		<div class="container" id="services">
 			<div class="row">
-
 				<div class="col-md-4 text-center">
 					<div class="single_service wow fadeInUp" data-wow-delay="0s">
 						<i class="fa fa-info"></i>
@@ -151,16 +150,37 @@
 					</div>
 				</div>
 			</div>
-			<div class="row" id="menu">
+
+			<!-- Menus for services -->
+			<div class="row_menu" id="menu_service1">
 				<div class="col-md-4">
-					<span><h5>Choose a line</h5>
-						<select id="lines" class="form-control"></select></span> <span><h5>Choose
-							a Starting point</h5>
-						<select id="start_stop" class="form-control"></select></span> <span><h5>Choose
-							a Ending point</h5>
-						<select id="end_stop" class="form-control"></select></span>
+					<span><h5>Choose a line</h5> <select class="form-control lines"></select></span> 
+					<span><h5>Choose a Starting point</h5> <select class="form-control start_stop"></select></span>
+					<span><h5>Choose an Ending point</h5> <select class="form-control end_stop"></select></span>
 
 					<button onclick="goToResults()">Go!</button>
+					<br>
+				</div>
+			</div>
+
+			<div class="row_menu" id="menu_service2">
+				<div class="col-md-4">
+					<span><h5>Choose a line</h5> <select class="form-control lines"></select></span> 
+					<span><h5>Choose an Ending point</h5> <select class="form-control end_stop"></select></span>
+
+					<button onclick="goToResults()">Go!</button>
+					<br>
+				</div>
+			</div>
+
+			<div class="row_menu" id="menu_service3">
+				<div class="col-md-4">
+					<span><h5>When do I want to go?</h5> <select id = "times" class = "form-control"></select></span>
+					<span><h5>Choose a line</h5> <select class="form-control lines"></select></span> 
+					<span><h5>Choose a Starting point</h5> <select class="form-control start_stop"></select></span>
+					<span><h5>Choose an Ending point</h5> <select class="form-control end_stop"></select></span>
+
+					<button onclick="goToResults()">See Results</button>
 					<br>
 				</div>
 			</div>
@@ -170,7 +190,9 @@
 		<div class="services" id="results" style="display: none;">
 
 			<p>blah blah</p>
-
+			
+			<button onclick="goToServices()">See Services</button>
+			<br>
 		</div>
 	</section>
 
@@ -259,9 +281,9 @@
 						<img src="images/shape.png" alt="">
 						<p>
 							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna<br /> aliqua.
-							Ut enim ad minim veniam, quis nostrud exercitation ullamco
-							laboris nisi ut aliquip ex.
+							eiusmod tempor incididunt ut labore et dolore magna<br />
+							aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+							ullamco laboris nisi ut aliquip ex.
 						</p>
 					</div>
 				</div>
@@ -389,10 +411,25 @@
 	<script src="js/myscript.js"></script>
 
 	<script>
-	function goToResults() { 
-		document.getElementById("services").style.display="none"; 
-		document.getElementById("results").style.display="block"; 
-	}
+ 		function goToResults() {
+			document.getElementById("services").style.display = "none";
+			document.getElementById("results").style.display = "block";
+		}
+		
+ 		function goToServices() {
+			document.getElementById("services").style.display = "block";
+			document.getElementById("results").style.display = "none";
+		}
+		
+		/* function goToResults() {
+			var services = document.getElementById("services");
+			var results = document.getElementById("results");
+
+			services.style.display = (services.style.display == "none" ? "block"
+					: "none");
+			results.style.display = (results.style.display == "none" ? "block"
+					: "none");
+		} */
 	</script>
 
 </body>
