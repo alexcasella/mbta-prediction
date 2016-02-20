@@ -102,7 +102,6 @@
                     </div>
                 </div>
             </div>
-        </section>
     </header>
 
 
@@ -138,11 +137,17 @@
             </div>
             <div class="row" id="menu">
                 <div class="col-md-4">
-                    <span><h5>Choose a line</h5><select id="lines" class="form-control"></select></span>
+                   <form action="mta_test"> 
+                    <span><h5>Choose a line</h5><select id="lines" name="lines" class="form-control"></select></span>
 
-                    <span><h5>Choose a Starting point</h5><select id="start_stop" class="form-control"></select></span>
+                    <span><h5>Choose a Starting point</h5><select id="start_stop" name="start_stop" class="form-control"></select></span>
 
-                    <span><h5>Choose a Ending point</h5><select id="end_stop" class="form-control"></select></span>
+                    <span><h5>Choose a Ending point</h5><select id="end_stop" name="end_stop" class="form-control"></select></span>
+                      <!-- <button type="submit" class="btn btn-default">Submit</button> -->
+                        <input type="submit">
+
+                    </form>
+                </div>
                 </div>    
             </div>    
         </div>
