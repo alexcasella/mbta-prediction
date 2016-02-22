@@ -16,22 +16,27 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 }]);
 
 app.factory('frontend_server', ['$http', function($http){
-	var frontend_server = {};
+	return { 
+		getResults = function(lines, stops) {
+		var results = null;
+		var req = {
+		    lines: lines,
+		    stops: stops
+		   }
+		$http({
+		method: 'GET', 
+		url: 'blah',
+		params : req
+		}).success(function(data){
+		     results = data;
 
-	// frontend_server.getResults = function() {
-	// 	return $http.get('/result').success(function(data){
-	// 		angular.copy(data, db.issues);
-	// 	});
-	// };
+		}).error(function(data){
 
-	frontend_server.getResults = function() {
-      return $http({
-        method: 'JSONP', 
-        url: 'blah'
-      });
-    }
+		});
 
-    return backend_api;
+	     return results;
+	    }
+  	}
 }]);
 
 app.controller('MainCtrl', ['$scope', function($scope, backend_api){
@@ -42,8 +47,8 @@ app.controller('MainCtrl', ['$scope', function($scope, backend_api){
 	    }
 	});
 
-  	// $scope.stops = ['stop 1', 'stop 2', 'stop 3', 'stop 4', 'stop 5'];
-  	// $scope.lines = ['Green', 'Red', 'Blue', 'Orange', 'Silver'];
+  	$scope.stops = ['stop 1', 'stop 2', 'stop 3', 'stop 4', 'stop 5'];
+  	$scope.lines = ['Green', 'Red', 'Blue', 'Orange', 'Silver'];
 
-  	$scope.results = backend_api.results;
+  	$scope.results = frontend_server.getResults(lines,stops);
 }]);
