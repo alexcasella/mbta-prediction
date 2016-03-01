@@ -41,7 +41,8 @@ app.controller('MainCtrl', ['$scope', 'frontend_server', function($scope, fronte
 		}
 	});
 
-	$scope.lines = ['Green', 'Red', 'Blue', 'Orange', 'Silver'];
+	$scope.lines = ['Green', 'Red', 'Blue', 'Orange'];
+
 	$scope.stops = ['stop 1', 'stop 2', 'stop 3', 'stop 4', 'stop 5'];
 
 	// This will be sent to the FE server
@@ -58,7 +59,7 @@ app.controller('MainCtrl', ['$scope', 'frontend_server', function($scope, fronte
 			$scope.results = data;
 		}).error(function(err) {
 			$scope.results = {
-				"Result": "train takes 10 mins to arrive"
+				"Result": "Alex Alex Alex Alex Alex"
 			};
 		});
 	};
@@ -68,6 +69,21 @@ app.controller('MainCtrl', ['$scope', 'frontend_server', function($scope, fronte
 app.controller('serviceCtrl', ['$scope', function($scope){
 	$scope.model = {
 		showmenu: 1
+	};
+
+	var lineUrls = {
+		Red: 'Red.png',
+		Green: 'Green.png',
+		Blue: 'Blue.png',
+		Orange: 'Orange.png'
+	};
+
+	$scope.getLineUrl = function (name) {
+		if (lineUrls[name] !== undefined) {
+			return lineUrls[name];
+		} else {
+			return false;
+		}
 	};
 
 	$scope.toggleMenu = function(val){

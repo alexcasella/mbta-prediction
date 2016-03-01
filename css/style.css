@@ -447,24 +447,7 @@ letter-spacing: 0px;
 	text-decoration:none;
 	}
 
-
-#lines{
-position: relative;
-width: 200px;
-margin-left:500px;
-
-}
-
-#start_stop{
-position: relative;
-width: 200px;
-margin-left:500px;
-
-}
-
-#end_stop{
-position: relative;
-width: 200px;
-margin-left:500px;
-
+#line_img {
+	max-height: 100%;
+	max-width: 100%;
 }

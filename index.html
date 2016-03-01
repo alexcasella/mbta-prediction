@@ -116,6 +116,7 @@
 	</div>
 
 	<script type = "text/ng-template" id = "/home.html">
+		
 		<div class="container" id ="services">
 			<div class="row" ng-controller = "serviceCtrl">
 				
@@ -153,111 +154,119 @@
 				</div>
 
 				<!-- Menus for each service -->
-				<div class="row_menu" ng-show = "model.showmenu === 1">
-					<div class="col-md-4">
-						<form ng-submit = "getResults()">
+				<div class = "col-md-7">
+					<div class="row_menu" ng-show = "model.showmenu === 1">
+						<div class="col-md-8">
+							<form ng-submit = "getResults()">
 
-							<label> Choose a line: </label>
-						    <select ng-model="$parent.pickedLine" class="form-control lines">
-						        <option value="">Pick a line...</option>
-						        <option ng-repeat="line in $parent.lines" value="{{line}}">{{line}}</option>
-						    </select>
+								<br>
 
-							<br>
+								<label> Which line will you ride </label>
+							    <select ng-model="$parent.pickedLine" class="form-control">
+							        <option value="">Choose a color...</option>
+							        <option ng-repeat="line in $parent.lines" value="{{line}}">{{line}}</option>
+							    </select>
 
-							<label> Choose a starting stop: </label>
-						    <select ng-model="$parent.pickedStartStop" class="form-control start_stop">
-						        <option value="">Pick a stop...</option>
-						        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
-						    </select>
+								<br>
 
-						    <br>
+								<label> Choose a starting stop: </label>
+							    <select ng-model="$parent.pickedStartStop" class="form-control">
+							        <option value="">See all stops...</option>
+							        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
+							    </select>
 
-						    <label> Choose an ending stop: </label>
-						    <select ng-model="$parent.pickedEndStop" class="form-control end_stop">
-						        <option value="">Pick a stop...</option>
-						        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
-						    </select>
+							    <br>
 
-						    <br>
+							    <label> Choose an destination: </label>
+							    <select ng-model="$parent.pickedEndStop" class="form-control">
+							        <option value="">See all stops...</option>
+							        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
+							    </select>
 
-						<button type = "submit">See Results</button>
-						<br>
-						</form>
+							    <br>
+
+								<button type = "submit" class = "form-control">See Results</button>
+								<br>
+							</form>
+						</div>
+					</div>
+
+					<div class="row_menu" ng-show = "model.showmenu === 2">
+						<div class="col-md-8">
+							<form ng-submit = "getResults()">
+
+								<label> Which line will you ride </label>
+							    <select ng-model="$parent.pickedLine" class="form-control">
+							        <option value="">Choose a color...</option>
+							        <option ng-repeat="line in $parent.lines" value="{{line}}">{{line}}</option>
+							    </select>
+
+								<br>
+
+								<label> Choose an destination: </label>
+							    <select ng-model="$parent.pickedEndStop" class="form-control">
+							        <option value="">See all stops...</option>
+							        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
+							    </select>
+
+							    <br>
+
+								<button type = "submit">See Results</button>
+								<br>
+							</form>
+						</div>
+					</div>
+
+					<div class="row_menu" ng-show = "model.showmenu === 3">
+						<div class="col-md-8">
+							<form ng-submit = "getResults()">
+
+								<label> When will you catch the T </label>
+								<select class = "form-control">
+								  <option value="time1">1 PM</option>
+								  <option value="time2">2 PM</option>
+								</select>
+
+								<br>
+
+								<label> Which line will you ride </label>
+							    <select ng-model="$parent.pickedLine" class="form-control">
+							        <option value="">Choose a color...</option>
+							        <option ng-repeat="line in $parent.lines" value="{{line}}">{{line}}</option>
+							    </select>
+
+								<br>
+
+								<label> Choose a starting stop: </label>
+							    <select ng-model="$parent.pickedStartStop" class="form-control">
+							        <option value="">See all stops...</option>
+							        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
+							    </select>
+
+							    <br>
+
+							    <label> Choose an destination: </label>
+							    <select ng-model="$parent.pickedEndStop" class="form-control">
+							        <option value="">See all stops...</option>
+							        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
+							    </select>
+
+							    <br>
+
+								<button type = "submit">See Results</button>
+								<br>
+							</form>
+						</div>
 					</div>
 				</div>
 
-				<div class="row_menu" ng-show = "model.showmenu === 2">
-					<div class="col-md-4">
-						<form ng-submit = "getResults()">
-
-							<label> Choose a line: </label>
-						    <select ng-model="$parent.pickedLine" class="form-control lines">
-						        <option value="">Pick a line...</option>
-						        <option ng-repeat="line in $parent.lines" value="{{line}}">{{line}}</option>
-						    </select>
-
-							<br>
-
-							<label> Choose an ending stop: </label>
-						    <select ng-model="$parent.pickedEndStop" class="form-control end_stop">
-						        <option value="">Pick a stop...</option>
-						        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
-						    </select>
-
-						    <br>
-
-							<button type = "submit">See Results</button>
-							<br>
-						</form>
-					</div>
+				<div class = "col-md-5">
+					<img id = "line_img" ng-src="{{getLineUrl($parent.pickedLine)}}" ng-if="$parent.pickedLine">
 				</div>
 
-				<div class="row_menu" ng-show = "model.showmenu === 3">
-					<div class="col-md-4">
-						<form ng-submit = "getResults()">
-
-							<label> Choose a time </label>
-							<select>
-							  <option value="time1">1 PM</option>
-							  <option value="time2">2 PM</option>
-							</select>
-
-							<br>
-
-							<label> Choose a line: </label>
-						    <select ng-model="$parent.pickedLine" class="form-control lines">
-						        <option value="">Pick a line...</option>
-						        <option ng-repeat="line in $parent.lines" value="{{line}}">{{line}}</option>
-						    </select>
-
-							<br>
-
-							<label> Choose a starting stop: </label>
-						    <select ng-model="$parent.pickedStartStop" class="form-control start_stop">
-						        <option value="">Pick a stop...</option>
-						        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
-						    </select>
-
-						    <br>
-
-						    <label> Choose an ending stop: </label>
-						    <select ng-model="$parent.pickedEndStop" class="form-control end_stop">
-						        <option value="">Pick a stop...</option>
-						        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
-						    </select>
-
-						    <br>
-
-							<button type = "submit">See Results</button>
-							<br>
-						</form>
-					</div>
-				</div>
+			<div class = "col-md-6">
+				<pre>results = {{results|json}}</pre>
 			</div>
-
-			<pre>results = {{results|json}}</pre>
-
 		</div>
 	</script>
 

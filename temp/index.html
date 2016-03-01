@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+  <head>
+    <meta charset="utf-8" />
+    <link data-require="bootstrap-css@3.3.6" data-semver="3.3.6" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" />
+    <script data-require="jquery@2.1.4" data-semver="2.1.4" src="https://code.jquery.com/jquery-2.1.4.js"></script>
+    <script data-require="angular.js@1.3.10" data-semver="1.3.10" src="https://code.angularjs.org/1.3.10/angular.js"></script>
+    <script data-require="angular-ui-router@0.2.10" data-semver="0.2.10" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
+    <script data-require="bootstrap@3.3.6" data-semver="3.3.6" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="myApp.js"></script>
+    <!-- Bootstrap -->
+   
+  </head>
+
+  <body ng-controller="MainCtrl">
+    <div>
+      <ui-view></ui-view>
+    </div>
+    
+    <script type="text/ng-template" id="/home.html">
+        <div class="container" id ="services">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <a>Service 1</a>
+                </div>
+                <div class="col-md-6 text-center">
+                    <a>Service 2</a>
+                </div>
+            </div>
+
+            <div class="row_menu" id="menu_service1">
+                <div class="col-md-6">
+                    <form ng-submit = "getResults()">
+                    
+                        <select ng-model = "pickedColor">
+                            <option ng-repeat = "color in colors" value = "{{color}}">{{color}}</option>
+                        </select> 
+
+                        <button type = "submit">See Results</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row_menu" id="menu_service2">
+                <div class="col-md-6">
+                    <form ng-submit="getResults()">
+                        
+                        <select ng-model = "pickedStop">
+                            <option ng-repeat = "stop in stops" value = "{{stop}}">{{stop}}</option>
+                        </select>
+                        
+                        <button type="submit">See Results</button>
+                    </form>
+                </div>
+            </div>
+
+            <pre>results = {{results|json}}</pre>
+        </div>
+    </script>
+
+    <script src="bootstrap.min.js"></script>
+  </body>
+
+</html>
