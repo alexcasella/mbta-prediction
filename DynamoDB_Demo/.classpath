@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="con" path="com.amazonaws.eclipse.sdk.AWS_JAVA_SDK"/>
+	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/commons-codec-1.9.jar"/>
+	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/fluent-hc-4.5.1.jar"/>
+	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/httpclient-4.5.1.jar"/>
+	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/httpclient-cache-4.5.1.jar"/>
+	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/httpclient-win-4.5.1.jar"/>
+	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/httpcore-4.4.3.jar"/>
+	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/httpmime-4.5.1.jar"/>
+	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/jackson-core-asl-1.9.13.jar"/>
+	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/jackson-mapper-asl-1.9.13.jar"/>
+	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/jna-4.1.0.jar"/>
+	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/jna-platform-4.1.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
