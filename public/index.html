@@ -196,7 +196,7 @@
 		<!-- For displaying results  -->
 		<div class="services" id="results" style="display: none;">
 
-			<p>blah blah</p>
+			<p class="slut"></p>
 			
 			<button onclick="goToServices()">See Services</button>
 			<br>
@@ -422,19 +422,26 @@
 
 	<script>
 		var socket = io.connect();
+			var obj = {"Copley": "70154", "Boylston": "70158", "Packards Corner": "70134", "South Street": "70110", "Kenmore": "70150", "Warren Street": "70124", "Boston Univ. East": "70146", "Babcock Street": "70136", "Science Park": "70207", "Harvard Ave.": "70130", "North Station": "70205", "Boston Univ. Central": "70144", "Arlington": "70156", "Park Street": "70200", "Lechmere": "70209", "Washington Street": "70120", "Boston Univ. West": "70142", "Griggs Street": "70128", "Saint Paul Street": "70140", "Boston College": "70106", "Blandford Street": "70148", "Chiswick Road": "70114", "Hynes Convention Center": "70152", "Allston Street": "70126", "Sutherland Road": "70116", "Chestnut Hill Ave.": "70112", "Haymarket": "70203", "Pleasant Street": "70138"}
+
+
 
 
  		function goToResults() {
  			var file = 
  			{"Service" : "1",
  			 "Line" : $('.lines').val(),
- 			 "Start": $('.start_stop').val(),
+ 			 "Start": obj[$('.start_stop').val()],
  			 "End"  : $('.end_stop').val()
  			}
  			console.log(file);
  			socket.emit('file', file);
 			document.getElementById("services").style.display = "none";
 			document.getElementById("results").style.display = "block";
+			socket.on('body',function(body){
+				$('.slut').html(body);
+				console.log(body)
+			});
 		}
 		
  		function goToServices() {
