@@ -10,7 +10,7 @@
 	<title ng-bind="pageTitle"></title>
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
-	<script src="app.js"></script>
+	<script src="angular.js"></script>
 
 	<!-- Google Font -->
 	<link
@@ -116,7 +116,7 @@
 	</div>
 
 	<script type = "text/ng-template" id = "/home.html">
-		
+
 		<div class="container" id ="services">
 			<div class="row" ng-controller = "serviceCtrl">
 				
@@ -172,7 +172,7 @@
 								<label> Choose a starting stop: </label>
 							    <select ng-model="$parent.pickedStartStop" class="form-control">
 							        <option value="">See all stops...</option>
-							        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
+							        <option ng-repeat="(key, value) in $parent.stops" value="{{value}}">{{key}}</option>
 							    </select>
 
 							    <br>
@@ -180,7 +180,7 @@
 							    <label> Choose an destination: </label>
 							    <select ng-model="$parent.pickedEndStop" class="form-control">
 							        <option value="">See all stops...</option>
-							        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
+							        <option ng-repeat="(key, value) in $parent.stops" value="{{value}}">{{key}}</option>
 							    </select>
 
 							    <br>
@@ -206,7 +206,7 @@
 								<label> Choose an destination: </label>
 							    <select ng-model="$parent.pickedEndStop" class="form-control">
 							        <option value="">See all stops...</option>
-							        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
+							        <option ng-repeat="(key, value) in $parent.stops" value="{{value}}">{{key}}</option>
 							    </select>
 
 							    <br>
@@ -240,7 +240,7 @@
 								<label> Choose a starting stop: </label>
 							    <select ng-model="$parent.pickedStartStop" class="form-control">
 							        <option value="">See all stops...</option>
-							        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
+							        <option ng-repeat="(key, value) in $parent.stops" value="{{value}}">{{key}}</option>
 							    </select>
 
 							    <br>
@@ -248,7 +248,7 @@
 							    <label> Choose an destination: </label>
 							    <select ng-model="$parent.pickedEndStop" class="form-control">
 							        <option value="">See all stops...</option>
-							        <option ng-repeat="stop in $parent.stops" value="{{stop}}">{{stop}}</option>
+							        <option ng-repeat="(key, value) in $parent.stops" value="{{value}}">{{key}}</option>
 							    </select>
 
 							    <br>
@@ -276,5 +276,6 @@
 	<script src="js/owl.carousel.js"></script>
 	<script src="js/wow.js"></script>
 	<script src="js/script.js"></script>
+
 </body>
 </html>
