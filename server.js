@@ -1,13 +1,9 @@
 var express = require("express");
-
 var app = express();
-
 var request = require('request');
-
 var http = require('http').Server(app);
 
 app.use(express.static(__dirname));
-
 
 app.get("/results", function (req, res) {
 	
@@ -28,7 +24,9 @@ app.get("/results", function (req, res) {
 	// }
 
 	// res.json({
-	// 	Line: req.query.line, 
+	// 	Color: req.query.line, 
+	//  Line: req.query.subline,
+	//  Direction: req.query.direction,
 	// 	StartStop: startVal, 
 	// 	EndStop: endVal
 	// });
@@ -36,7 +34,9 @@ app.get("/results", function (req, res) {
 
 	// Front end server response only
 	// res.json({
-	// 	Line: req.query.line, 
+	// 	Color: req.query.line, 
+	//  Line: req.query.subline,
+	//  Direction: req.query.direction,
 	// 	StartStop: req.query.startStop, 
 	// 	EndStop: req.query.endStop
 	// });
@@ -49,11 +49,15 @@ app.get("/results", function (req, res) {
 	        console.log(body); 
 	        // socket.emit('body', body);
 			res.json({
-				Line: req.query.line, 
+				Color: req.query.line, 
+				Line: req.query.subline,
+				Direction: req.query.direction,
 				StartStop: req.query.startStop, 
 				EndStop: req.query.endStop,
 				alert: body
 			});
+	    } else {
+	    	console.log(error);
 	    }
 	});
 });
