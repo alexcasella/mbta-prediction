@@ -27,7 +27,7 @@ public class Routes {
 		// set the requestURL
 		String requestURL = ConstDefine.mbtaBaseURI + endPointName
 				+ ConstDefine.apiKey + ConstDefine.format.substring(1);
-		System.out.println("\nAll Routes Request URL:\n" + requestURL);
+		// System.out.println("\nAll Routes Request URL:\n" + requestURL);
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		try {
@@ -44,7 +44,7 @@ public class Routes {
 					&& httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				// convert to Json String
 				String json = EntityUtils.toString(entity);
-				System.out.println("\nRoutes JSON:\n" + json + "\n");
+				// System.out.println("\nRoutes JSON:\n" + json + "\n");
 
 				ObjectMapper mapper = new ObjectMapper();
 				// JSON from String to Object

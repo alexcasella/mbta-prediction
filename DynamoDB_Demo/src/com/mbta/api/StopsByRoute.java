@@ -31,10 +31,10 @@ public class StopsByRoute {
 		String parameter = new StringBuilder().append("route=")
 				.append(encodeRouteID).toString();
 		// set the requestURL
-		String requestURL = ConstDefine.mbtaBaseURI + endPointName + ConstDefine.apiKey
-				+ parameter + ConstDefine.format;
+		String requestURL = ConstDefine.mbtaBaseURI + endPointName
+				+ ConstDefine.apiKey + parameter + ConstDefine.format;
 		// requestURL = requestURL.replaceAll(" ", "%20");
-		System.out.println("\nStops By Route Request URL: \n" + requestURL);
+		// System.out.println("\nStops By Route Request URL: \n" + requestURL);
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		try {

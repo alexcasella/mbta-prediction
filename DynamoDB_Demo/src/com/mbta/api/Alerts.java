@@ -1,9 +1,11 @@
 package com.mbta.api;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -12,35 +14,31 @@ import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.mbta.entity.AlertEntity;
+import com.mbta.entity.AllAlertsEntity;
 import com.mbta.util.ConstDefine;
 
-public class AlertById {
-	public static AlertEntity getAlertById(String aldertID) throws Exception {
-		AlertEntity alert = new AlertEntity();
+public class Alerts {
 
-		String endPointName = AlertById.class.getSimpleName().toLowerCase();
+	public static AllAlertsEntity getAllAlerts(boolean include_access_alerts,
+			boolean include_service_alerts) throws Exception {
+		AllAlertsEntity alerts = new AllAlertsEntity();
 
-		String encodeAlertID = URLEncoder.encode(aldertID, "UTF-8").replace(
-				"+", "%20");
-
-		String parameter = new StringBuilder().append("id=")
-				.append(encodeAlertID).toString();
-
+		String endPointName = Alerts.class.getSimpleName().toLowerCase();
+		String parameter = new StringBuilder().append("include_access_alerts=")
+				.append(include_access_alerts)
+				.append("&include_service_alerts=")
+				.append(include_service_alerts).toString();
 		String requestURL = ConstDefine.mbtaBaseURI + endPointName
 				+ ConstDefine.apiKey + parameter + ConstDefine.format;
 
-		// System.out.println("\nAlert By ID Request URL: \n" + requestURL + "\n");
+		// System.out.println("\nAlert Request URL: \n" + requestURL + "\n");
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 
 		try {
-			// Http request
 			HttpGet httpGet = new HttpGet(requestURL);
 
-			// Http response
 			CloseableHttpResponse httpResponse = httpclient.execute(httpGet);
-
-			System.out.println("Alert By Id " + httpResponse.getStatusLine());
 
 			try {
 				HttpEntity entity = httpResponse.getEntity();
@@ -48,19 +46,16 @@ public class AlertById {
 				if (entity != null
 						&& httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 					String json = EntityUtils.toString(entity);
-					// System.out.println("\nAlert By Id JSON:\n" + json +
-					// "\n");
+					// System.out.println("\nAlerts JSON:\n" + json + "\n");
 
 					ObjectMapper mapper = new ObjectMapper();
-
-					alert = mapper.readValue(json, AlertEntity.class);
+					alerts = mapper.readValue(json, AllAlertsEntity.class);
 
 				} else {
 					throw new Exception(httpResponse.getStatusLine()
 							.getReasonPhrase());
 				}
 				EntityUtils.consume(entity);
-
 			} finally {
 
 				httpResponse.close();
@@ -70,8 +65,6 @@ public class AlertById {
 			httpclient.close();
 		}
 
-		return alert;
-
+		return alerts;
 	}
-
 }

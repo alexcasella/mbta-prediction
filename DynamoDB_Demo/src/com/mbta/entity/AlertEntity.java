@@ -2,9 +2,6 @@ package com.mbta.entity;
 
 import java.util.ArrayList;
 
-import com.mbta.entity.AffectedServicesEntity;
-import com.mbta.entity.EffectPeriodEntity;
-
 public class AlertEntity {
 
 	private int alert_id;
@@ -36,6 +33,8 @@ public class AlertEntity {
 	private String timeframe_text;
 
 	private String alert_lifecycle;
+
+	private String recurrence_text;
 
 	private String banner_text;
 
@@ -161,6 +160,14 @@ public class AlertEntity {
 
 	public void setAlert_lifecycle(String alert_lifecycle) {
 		this.alert_lifecycle = alert_lifecycle;
+	}
+
+	public String getRecurrence_text() {
+		return recurrence_text;
+	}
+
+	public void setRecurrence_text(String recurrence_text) {
+		this.recurrence_text = recurrence_text;
 	}
 
 	public String getBanner_text() {

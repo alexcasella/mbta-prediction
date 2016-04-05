@@ -15,5 +15,6 @@
 	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/jackson-mapper-asl-1.9.13.jar"/>
 	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/jna-4.1.0.jar"/>
 	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/jna-platform-4.1.0.jar"/>
+	<classpathentry kind="lib" path="/Users/andy/workspace/DynamoDB_Demo/bin/log4j-1.2.17.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

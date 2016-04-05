@@ -1,5 +1,7 @@
 package com.mbta.entity;
 
+import java.util.ArrayList;
+
 import com.mbta.entity.StopEntity;
 
 public class ElevatorEntity {
@@ -9,7 +11,7 @@ public class ElevatorEntity {
 
 	private String elev_type;
 
-	private StopEntity stop;
+	private ArrayList<StopEntity> stops;
 
 	public String getElev_id() {
 		return elev_id;
@@ -35,12 +37,12 @@ public class ElevatorEntity {
 		this.elev_type = elev_type;
 	}
 
-	public StopEntity getStop() {
-		return stop;
+	public ArrayList<StopEntity> getStops() {
+		return stops;
 	}
 
-	public void setStop(StopEntity stop) {
-		this.stop = stop;
+	public void setStops(ArrayList<StopEntity> stops) {
+		this.stops = stops;
 	}
 
 }
