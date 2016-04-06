@@ -5,8 +5,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Region;
@@ -23,7 +24,6 @@ import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
 import com.amazonaws.services.dynamodbv2.model.KeyType;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
-import com.amazonaws.services.dynamodbv2.model.TableDescription;
 import com.amazonaws.services.dynamodbv2.util.Tables;
 import com.mbta.api.Routes;
 import com.mbta.api.StopsByRoute;
@@ -64,20 +64,21 @@ public class AllStops extends Thread {
 				if (!Tables.doesTableExist(dynamo, tableName)) {
 					logger.log(Level.INFO, tableName
 							+ " not exist, creat table and activate...");
-					// createTable();
+					createTable();
 				}
 				logger.log(Level.INFO, tableName
 						+ " already exist, clean table and create items...");
-				// scanAndDeleteItems();
-				// insertItems();
+				scanAndDeleteItems();
+				insertItems();
 
-				// Thread.sleep(1000L * 60L * 60L * 24L * 7L);
-				Thread.sleep(1000L * 10L);
+				Thread.sleep(1000L * 60L * 60L * 24L * 7L);
+				// For debug 
+				// Thread.sleep(1000L * 15L);
 
 			} catch (InterruptedException ie) {
-				logger.log(Level.SEVERE, ie.getMessage());
+				logger.error(ie.getMessage());
 			} catch (Exception e) {
-				logger.log(Level.SEVERE, e.getMessage());
+				logger.error(e.getMessage());
 			}
 
 		}
@@ -92,6 +93,8 @@ public class AllStops extends Thread {
 
 			long now = new Date().getTime() / 1000;
 			String last_modified = Long.toString(now);
+			
+			int counter = 0;
 
 			for (ModeEntity modeFromAllRoute : allRoutes.getMode()) {
 				if (modeFromAllRoute.getRoute_type().equals("0")
@@ -116,17 +119,18 @@ public class AllStops extends Thread {
 										.getRoute_name());
 								asm.setLast_modified(last_modified);
 
+								counter++;
 								mapper.save(asm);
 							}
 						}
 					}
 				}
 			}
-			logger.log(Level.INFO, "Items in " + tableName + " saved.");
+			logger.info(counter + " items in " + tableName + " saved.");
 
 		} catch (Exception e) {
 
-			logger.log(Level.SEVERE, e.getMessage());
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -147,7 +151,7 @@ public class AllStops extends Thread {
 		for (AllStopsMapper stop : allStops) {
 			mapper.delete(stop);
 		}
-		logger.log(Level.INFO, "Items in " + tableName + " removed.");
+		logger.info(allStops.size() + " items in " + tableName + " cleaned.");
 
 	}
 
@@ -176,7 +180,7 @@ public class AllStops extends Thread {
 							new ProvisionedThroughput().withReadCapacityUnits(
 									5L).withWriteCapacityUnits(6L));
 
-			logger.log(Level.INFO, "Issuing CreateTable request for "
+			logger.info("Issuing CreateTable request for "
 					+ tableName);
 			Table table = dynamoDB.createTable(request);
 
@@ -189,7 +193,7 @@ public class AllStops extends Thread {
 
 		} catch (Exception e) {
 			System.err.println("CreateTable request failed for " + tableName);
-			logger.log(Level.SEVERE, e.getMessage());
+			logger.error(e.getMessage());
 		}
 	}
 

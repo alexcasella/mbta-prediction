@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -25,17 +27,15 @@ import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.amazonaws.services.dynamodbv2.util.Tables;
 import com.mbta.api.Alerts;
 import com.mbta.dbmapper.AllAlertsMapper;
-import com.mbta.dbmapper.AllStopsMapper;
 import com.mbta.entity.AlertEntity;
 import com.mbta.entity.AllAlertsEntity;
 import com.mbta.entity.EffectPeriodEntity;
 import com.mbta.util.TableInfo;
-import org.apache.log4j.Logger;
 
 public class AllAlerts extends Thread {
 
 	static AmazonDynamoDB dynamo = new AmazonDynamoDBClient(
-			new ProfileCredentialsProvider("default").getCredentials());
+			new ProfileCredentialsProvider("Andy").getCredentials());
 
 	static DynamoDB dynamoDB = new DynamoDB(dynamo);
 
@@ -66,8 +66,9 @@ public class AllAlerts extends Thread {
 				 scanAndDeleteItems();
 				 insertItems();
 
-				// Thread.sleep(1000L * 60L * 5L);
-				Thread.sleep(1000L * 60L * 2L);
+				Thread.sleep(1000L * 60L * 5L);
+				// For debug
+				// Thread.sleep(1000L * 30L );
 
 			} catch (InterruptedException ie) {
 				logger.error(ie.getMessage());
@@ -94,7 +95,7 @@ public class AllAlerts extends Thread {
 		for (AllAlertsMapper alert : allAlerts) {
 			mapper.delete(alert);
 		}
-		logger.info(allAlerts.size() + " items in " + tableName + " removed.");
+		logger.info(allAlerts.size() + " items in " + tableName + " cleaned.");
 
 	}
 
