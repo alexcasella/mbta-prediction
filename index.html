@@ -157,49 +157,63 @@
 				<div class = "col-md-7">
 					<div class="row_menu" ng-show = "model.showmenu === 1">
 						<div class="col-md-8">
-							<form ng-submit = "getResults()">
+
+							<form name = "serviceForm" ng-submit = "getResults()">
 
 
 							    <label> Which color T will you ride </label>
-							    <select ng-model="$parent.pickedColor" ng-change = "$parent.setStopSelection()" class="form-control" 
-							    	ng-options = "line as line for line in $parent.lines">
+							    <select id = "pickedColor" ng-model="$parent.pickedColor" ng-change = "$parent.setStopSelection(); validateForm()" class="form-control" 
+							    	ng-options = "line as line for line in $parent.lines" required>
+							    	
+							    	<option value="">Select MBTA color</option> 
 							    </select>
 
 								<br>
 
 
-								<label> Line </label>
-								<select ng-model = "$parent.pickedSubline" ng-change = "$parent.setStopSelection()" class = "form-control"
+								<label ng-show = "$parent.pickedColor == 'Green'"> Line </label>
+								<select ng-model = "$parent.pickedSubline" ng-change = "$parent.setStopSelection()" class = "form-control" 
+									ng-show = "$parent.pickedColor == 'Green'"
 									ng-options = "subline as subline for subline in $parent.sublines">
+
+									<option value="">Select B, C, D, or E </option> 
 								</select>
 
-								<br>
+								<br ng-show = "$parent.pickedColor == 'Green'">
 
-								
+
 								<label> Direction </label>
-								<select ng-model = "$parent.pickedDirection" ng-change = "$parent.setStopSelection()" class = "form-control"
-									ng-options = "direction as direction for direction in $parent.directions">
+								<select id = "pickedDirection" ng-model = "$parent.pickedDirection" ng-change = "$parent.setStopSelection(); validateForm()" class = "form-control"
+									ng-options = "direction as direction for direction in $parent.directions" required>
+
+									<option value="">Choose direction</option> 
 								</select>
 
 								<br>
 
 
-								<label> Choose a starting stop: </label>
-							    <select ng-model="$parent.pickedStartStop" class="form-control"
-							    	ng-options = "stop.stopID as stop.stopName for stop in $parent.stopSelection">
+								<label> Start stop: </label>
+							    <select id = "pickedStartStop" ng-model="$parent.pickedStartStop" ng-change = "validateForm()" class="form-control"
+							    	ng-options = "stop.stopID as stop.stopName for stop in $parent.stopSelection" required>
+
+							    	<option value="">Choose a stop</option>
 							    </select>
 
 							    <br>
 
 
-							    <label> Choose an ending stop: </label>
-							    <select ng-model="$parent.pickedEndStop" class="form-control"
-							    	ng-options = "stop.stopID as stop.stopName for stop in $parent.stopSelection">
+							    <label> End stop: </label>
+							    <select id = "pickedEndStop" ng-model="$parent.pickedEndStop" ng-change = "validateForm()" class="form-control"
+							    	ng-options = "stop.stopID as stop.stopName for stop in $parent.stopSelection" required>
+
+							    	<option value="">Choose a stop</option>
 							    </select>
 
 							    <br>
 
-								<button type = "submit" class = "form-control">See Results</button>
+
+								<button type = "submit" ng-click = "validateForm()" class = "btn btn-default">See Results</button> 
+
 								<br>
 							</form>
 						</div>
@@ -219,12 +233,13 @@
 								<br>
 
 
-								<label> Line </label>
-								<select ng-model = "$parent.pickedSubline" ng-change = "$parent.setStopSelection()" class = "form-control"
+								<label ng-show = "$parent.pickedColor == 'Green'"> Line </label>
+								<select ng-model = "$parent.pickedSubline" ng-change = "$parent.setStopSelection()" class = "form-control" 
+									ng-show = "$parent.pickedColor == 'Green'"
 									ng-options = "subline as subline for subline in $parent.sublines">
 								</select>
 
-								<br>
+								<br ng-show = "$parent.pickedColor == 'Green'">
 
 								
 								<label> Direction </label>
@@ -272,12 +287,13 @@
 								<br>
 
 
-								<label> Line </label>
-								<select ng-model = "$parent.pickedSubline" ng-change = "$parent.setStopSelection()" class = "form-control"
+								<label ng-show = "$parent.pickedColor == 'Green'"> Line </label>
+								<select ng-model = "$parent.pickedSubline" ng-change = "$parent.setStopSelection()" class = "form-control" 
+									ng-show = "$parent.pickedColor == 'Green'"
 									ng-options = "subline as subline for subline in $parent.sublines">
 								</select>
 
-								<br>
+								<br ng-show = "$parent.pickedColor == 'Green'">
 
 								
 								<label> Direction </label>
@@ -357,11 +373,26 @@
 					<img id = "line_img" ng-src="{{getLineUrl($parent.pickedColor)}}" ng-if="$parent.pickedColor">
 				</div>
 
-			<div class = "col-md-6">
-				<pre>results = {{results|json}}</pre>
-			</div>
+			<!-- 
+
+			// If this was a single page application, results would be displayed here
+			// <div class = "col-md-6">
+			// 	<pre>results = {{results|json}}</pre>
+			// </div> 
+
+			-->
 		</div>
 	</script>
+
+
+
+	<script type = "text/ng-template" id = "/resultsPage.html">
+		<div class = "col-md-6">
+			<pre>results = {{results|json}}</pre>
+		</div>
+	</script>
+
+
 
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

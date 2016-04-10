@@ -11,10 +11,18 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 		data:{ 
 		   pageTitle: 'Boston Now' 
 		}
+	}).state('resultsPage', {
+		url: '/resultsPage',
+		templateUrl: '/resultsPage.html',
+		controller: 'MainCtrl',
+		data: {
+			pageTitle: 'Prediction Results'
+		}
 	})
 	$urlRouterProvider.otherwise('home');
 
 }]);
+
 
 
 app.factory('frontend_server', ['$http', function($http){
@@ -23,7 +31,7 @@ app.factory('frontend_server', ['$http', function($http){
 			var req = {};
 
 			if (line !== '') req.line = line;
-
+			
 			if (subline !== '') {
 				req.subline = subline;
 			} else {
@@ -46,7 +54,19 @@ app.factory('frontend_server', ['$http', function($http){
 }]);
 
 
-app.controller('MainCtrl', ['$scope', 'frontend_server', function($scope, frontend_server){
+// Service that redirects home page to results page upon submission of form
+// When moving to another page you are accessing a different $scope
+// so the data will not be there. Use a service to get around this problem
+// Then inject GlobalState into controller and set $scope.results = GlobalState.results
+app.factory('GlobalState', [function() {
+   return {
+       results: null
+   };
+}]);
+
+
+
+app.controller('MainCtrl', ['$scope', '$state', 'frontend_server', 'GlobalState', function($scope, $state, frontend_server, GlobalState){
 
 	// Page title
 	$scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
@@ -55,8 +75,10 @@ app.controller('MainCtrl', ['$scope', 'frontend_server', function($scope, fronte
 		}
 	});
 
+	// colors
 	$scope.lines = ['Green', 'Red', 'Blue', 'Orange'];
 
+	// If color = Green
 	$scope.sublines = ['B', 'C', 'D', 'E'];
 
 	$scope.directions = ['Inbound', 'Outbound'];
@@ -164,19 +186,18 @@ app.controller('MainCtrl', ['$scope', 'frontend_server', function($scope, fronte
 			// console.log($scope.stopSelection);
 		} else if ($scope.pickedColor && $scope.pickedDirection) { // Red, Blue, Orange lines
 			$scope.stopSelection = stops[$scope.pickedColor + $scope.pickedDirection];
-		} else {
-			console.log("Error: must select MBTA Line and Direction!");
-		}
+		} 
 	}
 
 	// Gets JSON object from FE server
 	$scope.getResults = function() {
 		frontend_server.getResults($scope.pickedColor, $scope.pickedSubline, $scope.pickedDirection, $scope.pickedStartStop, $scope.pickedEndStop)
 		.success(function(data) {
-			$scope.results = data;
+			GlobalState.results = data;
+			$state.go('resultsPage');
 		}).error(function(err) {
-			$scope.results = {
-				"Result": "Error"
+			GlobalState.results = {
+				"Result": "Internal error"
 			};
 		});
 
@@ -188,6 +209,63 @@ app.controller('MainCtrl', ['$scope', 'frontend_server', function($scope, fronte
 		$scope.pickedEndStop = '';
 	};
 
+	$scope.results = GlobalState.results;
+
+	// $scope.getResults = function() {
+	// 	frontend_server.getResults($scope.pickedColor, $scope.pickedSubline, $scope.pickedDirection, $scope.pickedStartStop, $scope.pickedEndStop)
+	// 	.success(function(data) {
+	// 		$scope.results = data;
+	// 		$state.go('resultsPage');
+	// 	}).error(function(err) {
+	// 		$scope.results = {
+	// 			"Result": "Internal error"
+	// 		};
+	// 	});
+
+	// 	// Resets the form fields to blank
+	// 	$scope.pickedColor = '';
+	// 	$scope.pickedSubline = '';
+	// 	$scope.pickedDirection = '';
+	// 	$scope.pickedStartStop = '';
+	// 	$scope.pickedEndStop = '';
+	// };
+
+
+	// Client side input validation
+	$scope.validateForm = function() {
+
+		var colorSelection = document.getElementById("pickedColor");
+
+		if (colorSelection.validity.valueMissing) {
+			colorSelection.setCustomValidity("Please select a MBTA color");
+		} else {
+			colorSelection.setCustomValidity("");
+		}
+
+		var directionSelection = document.getElementById("pickedDirection");
+
+		if (directionSelection.validity.valueMissing) {
+			directionSelection.setCustomValidity("Please select a direction of travel");
+		} else {
+			directionSelection.setCustomValidity("");
+		}
+
+		var startstopSelection = document.getElementById("pickedStartStop");
+
+		if (startstopSelection.validity.valueMissing) {
+			startstopSelection.setCustomValidity("Please choose a starting stop");
+		} else {
+			startstopSelection.setCustomValidity("");
+		}
+
+		var endstopSelection = document.getElementById("pickedEndStop");
+
+		if (endstopSelection.validity.valueMissing) {
+			endstopSelection.setCustomValidity("Please choose an ending stop");
+		} else {
+			endstopSelection.setCustomValidity("");
+		}
+	}
 }]);
 
 // For toggling between services and changing lines to display maps
