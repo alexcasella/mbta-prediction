@@ -373,24 +373,25 @@
 					<img id = "line_img" ng-src="{{getLineUrl($parent.pickedColor)}}" ng-if="$parent.pickedColor">
 				</div>
 
-			<!-- 
 
+		<!--		
 			// If this was a single page application, results would be displayed here
 			// <div class = "col-md-6">
 			// 	<pre>Response = {{results|json}}</pre>
 			// </div> 
+		-->
 
-			-->
+
 		</div>
 	</script>
 
 
-
-	<script type = "text/ng-template" id = "/resultsPage.html">
+	<script type = "text/ng-template" id = "/resultsPage.html" ng-controller = "backgroundImageCtrl" ng-style = "setBackground">
 		<div class = "col-md-6">
 			<pre>Response = {{results|json}}</pre>
 		</div>
 	</script>
+
 
 
 

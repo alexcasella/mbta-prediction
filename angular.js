@@ -295,3 +295,11 @@ app.controller('serviceCtrl', ['$scope', function($scope){
 	};
 }]);
 
+
+app.controller('backgroundImageCtrl', function($scope, $http) {
+
+    $scope.setBackground = {
+        'background-image' : 'mbta_map.jpg'
+    };
+
+})
