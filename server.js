@@ -82,6 +82,10 @@ app.get("/results", function (req, res) {
 
 					    } else {
 
+					    	if (res.json.error == null) {
+								res.json.error == "Our service is down at this time, please try again later :( ";
+							} 
+
 					    	console.log(error);
 
 					    	res.json({
@@ -98,6 +102,10 @@ app.get("/results", function (req, res) {
 
 				} else {
 
+					if (res.json.error == null) {
+						res.json.error == "Our service is down at this time, please try again later :( ";
+					} 
+
 			    	console.log(error);
 
 			    	res.json({
@@ -112,6 +120,10 @@ app.get("/results", function (req, res) {
 		    });
 		    	
 		} else {
+
+			if (res.json.error == null) {
+				res.json.error == "Our service is down at this time, please try again later :( ";
+			} 
 
 	    	console.log(error);
 

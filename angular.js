@@ -24,7 +24,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 }]);
 
 
-
+// Communication between Angular and Node
 app.factory('frontend_server', ['$http', function($http){
 	return { 
 		getResults : function(line, subline, direction, startStop, endStop) {
@@ -189,6 +189,7 @@ app.controller('MainCtrl', ['$scope', '$state', 'frontend_server', 'GlobalState'
 		} 
 	}
 
+	// Communication bewteen UI and Angular
 	// Gets JSON object from FE server
 	$scope.getResults = function() {
 		frontend_server.getResults($scope.pickedColor, $scope.pickedSubline, $scope.pickedDirection, $scope.pickedStartStop, $scope.pickedEndStop)
