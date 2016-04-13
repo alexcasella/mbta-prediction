@@ -169,14 +169,14 @@ app.controller('MainCtrl', ['$scope', '$state', 'frontend_server', 'GlobalState'
 	};
 
 	// This will be sent to the FE server
-	$scope.pickedColor = '';
+	$scope.pickedColor = 'default';
 	$scope.pickedSubline = '';
 	$scope.pickedDirection = '';
 	$scope.pickedStartStop = '';
 	$scope.pickedEndStop = '';
 
 	$scope.setStopSelection = function() {
-		if ($scope.pickedColor && $scope.pickedSubline && $scope.pickedDirection) { // Green line
+		if ($scope.pickedColor !== 'default' && $scope.pickedSubline && $scope.pickedDirection) { // Green line
 
 			// console.log("true");
 			// console.log($scope.pickedColor + $scope.pickedSubline + $scope.pickedDirection);
@@ -203,7 +203,7 @@ app.controller('MainCtrl', ['$scope', '$state', 'frontend_server', 'GlobalState'
 		});
 
 		// Resets the form fields to blank
-		$scope.pickedColor = '';
+		$scope.pickedColor = 'default';
 		$scope.pickedSubline = '';
 		$scope.pickedDirection = '';
 		$scope.pickedStartStop = '';
@@ -234,6 +234,8 @@ app.controller('MainCtrl', ['$scope', '$state', 'frontend_server', 'GlobalState'
 
 	// Client side input validation
 	$scope.validateForm = function() {
+
+		// Menu 1
 
 		var colorSelection = document.getElementById("pickedColor");
 
@@ -266,6 +268,66 @@ app.controller('MainCtrl', ['$scope', '$state', 'frontend_server', 'GlobalState'
 		} else {
 			endstopSelection.setCustomValidity("");
 		}
+
+		// Menu 2
+
+		// var colorSelection = document.getElementById("pickedColor2");
+
+		// if (colorSelection.validity.valueMissing) {
+		// 	colorSelection.setCustomValidity("Please select a MBTA color");
+		// } else {
+		// 	colorSelection.setCustomValidity("");
+		// }
+
+		// var directionSelection = document.getElementById("pickedDirection2");
+
+		// if (directionSelection.validity.valueMissing) {
+		// 	directionSelection.setCustomValidity("Please select a direction of travel");
+		// } else {
+		// 	directionSelection.setCustomValidity("");
+		// }
+
+		// var endstopSelection = document.getElementById("pickedEndStop2");
+
+		// if (endstopSelection.validity.valueMissing) {
+		// 	endstopSelection.setCustomValidity("Please choose an ending stop");
+		// } else {
+		// 	endstopSelection.setCustomValidity("");
+		// }
+
+		// Menu 3
+
+		var colorSelection = document.getElementById("pickedColor3");
+
+		if (colorSelection.validity.valueMissing) {
+			colorSelection.setCustomValidity("Please select a MBTA color");
+		} else {
+			colorSelection.setCustomValidity("");
+		}
+
+		var directionSelection = document.getElementById("pickedDirection3");
+
+		if (directionSelection.validity.valueMissing) {
+			directionSelection.setCustomValidity("Please select a direction of travel");
+		} else {
+			directionSelection.setCustomValidity("");
+		}
+
+		var startstopSelection = document.getElementById("pickedStartStop3");
+
+		if (startstopSelection.validity.valueMissing) {
+			startstopSelection.setCustomValidity("Please choose a starting stop");
+		} else {
+			startstopSelection.setCustomValidity("");
+		}
+
+		var endstopSelection = document.getElementById("pickedEndStop3");
+
+		if (endstopSelection.validity.valueMissing) {
+			endstopSelection.setCustomValidity("Please choose an ending stop");
+		} else {
+			endstopSelection.setCustomValidity("");
+		}
 	}
 }]);
 
@@ -276,10 +338,11 @@ app.controller('serviceCtrl', ['$scope', function($scope){
 	};
 
 	var lineUrls = {
-		Red: 'Red.png',
-		Green: 'Green.png',
-		Blue: 'Blue.png',
-		Orange: 'Orange.png'
+		default: '/images/mbta_map.jpg',
+		Red: '/images/Red.png',
+		Green: '/images/Green.png',
+		Blue: '/images/Blue.png',
+		Orange: '/images/Orange.png'
 	};
 
 	$scope.getLineUrl = function (name) {
@@ -299,7 +362,7 @@ app.controller('serviceCtrl', ['$scope', function($scope){
 app.controller('backgroundImageCtrl', function($scope, $http) {
 
     $scope.setBackground = {
-        'background-image' : 'mbta_map.jpg'
+        'background' : 'url(/images/mbta_map.jpg)'
     };
 
 })
