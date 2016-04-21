@@ -66,7 +66,7 @@
 								class="icon-bar"></span> <span class="icon-bar"></span> <span
 								class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#"><img src="images/logo.png"
+						<a class="navbar-brand" href="#/home"><img src="images/logo.png"
 							alt=""></a>
 					</div>
 
@@ -74,7 +74,7 @@
 					<div class="collapse navbar-collapse"
 						id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav navbar-right">
-							<li><a href="#HOME">Home</a></li>
+							<li><a href="#/home">Home</a></li>
 							<li><a href="#SERVICE">Services</a></li>
 							<li><a href="#ABOUT">About</a></li>
 							<li><a href="#CONTACT">Contact</a></li>
@@ -284,6 +284,15 @@
 							<form name = "serviceForm" ng-submit = "getResults()">
 
 
+								<label> What time will you take the T </label>
+							    <select class = "form-control">
+							    	
+							    	<option value="">Choose time</option> 
+							    </select>
+
+								<br>
+
+
 							    <label> Which color T will you ride </label>
 							    <select id = "pickedColor3" ng-model="$parent.pickedColor" ng-change = "$parent.setStopSelection(); validateForm()" class="form-control" 
 							    	ng-options = "line as line for line in $parent.lines" required>
@@ -350,21 +359,101 @@
 				</div>
 
 
-		<!--		
-			// If this was a single page application, results would be displayed here
-			// <div class = "col-md-6">
-			// 	<pre>Response = {{results|json}}</pre>
-			// </div> 
-		-->
+			<div class = "col-md-12">
+				<table>
+
+					<th> Your selection: </th>
+						<tr>
+							<td> You picked the {{results.Color}} line </td>
+						</tr>
+
+						<tr ng-show = "$parent.pickedColor == 'Green'"> 
+							<td> {{results.Line}} train </td>
+						</tr>	
+
+						<tr> 
+							<td> Going {{results.Direction}}. </td>
+						</tr>
+
+						<tr>
+							<td> Starting at stop {{results.StartStop.stopName}},  going to {{results.EndStop}} </td>
+						</tr>
 
 
+					<th> Our results: </th>
+						<tr>
+							<td> Alert header: {{results.AlertHeader}} </td>
+						</tr>
+
+						<tr>
+							<td> Alert detail: {{results.AlertDetail}} </td>
+						</tr>
+
+						</tr>
+							<td> Prediction: {{results.Prediction}} </td>
+						</tr>
+
+				</table>
+
+
+				<br>
+				<br>
+
+				<!-- 
+				// Raw response data
+				// <pre >Response = {{results|json}}</pre> 
+				-->
+			</div>
 		</div>
 	</script>
 
 
 	<script type = "text/ng-template" id = "/resultsPage.html">
-		<div class = "col-md-12" ng-controller = "backgroundImageCtrl" ng-style = "setBackground">
-			<pre >Response = {{results|json}}</pre>
+		<!-- <div class = "col-md-12" ng-controller = "backgroundImageCtrl" ng-style = "setBackground"> -->
+		<div class = "col-md-12">
+			<table>
+
+				<th> Your selection: </th>
+					<tr>
+						<td> You picked the {{results.Color}} line </td>
+					</tr>
+
+					<tr ng-show = "$parent.pickedColor == 'Green'"> 
+						<td> {{results.Line}} train </td>
+					</tr>	
+
+					<tr> 
+						<td> Going {{results.Direction}}. </td>
+					</tr>
+
+					<tr>
+						<td> Starting at stop {{results.StartStop.stopName}},  going to {{results.EndStop}} </td>
+					</tr>
+
+
+				<th> Our results: </th>
+					<tr>
+						<td> Alert header: {{results.AlertHeader}} </td>
+					</tr>
+
+					<tr>
+						<td> Alert detail: {{results.AlertDetail}} </td>
+					</tr>
+
+					</tr>
+						<td> Prediction: {{results.Prediction}} </td>
+					</tr>
+
+			</table>
+
+
+			<br>
+			<br>
+
+			<!-- 
+			// Raw response data
+			// <pre >Response = {{results|json}}</pre> 
+			-->
 		</div>
 	</script>
 

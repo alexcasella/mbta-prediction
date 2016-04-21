@@ -10,15 +10,20 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 		controller: 'MainCtrl',
 		data:{ 
 		   pageTitle: 'Boston Now' 
-		}
-	}).state('resultsPage', {
-		url: '/resultsPage',
-		templateUrl: '/resultsPage.html',
-		controller: 'MainCtrl',
-		data: {
-			pageTitle: 'Prediction Results'
-		}
+		},
+		reloadOnSearch: false
 	})
+
+	// If we have a separate results page then this:
+	// 
+	// }).state('resultsPage', {
+	// 	url: '/resultsPage',
+	// 	templateUrl: '/resultsPage.html',
+	// 	controller: 'MainCtrl',
+	// 	data: {
+	// 		pageTitle: 'Prediction Results'
+	// }
+
 	$urlRouterProvider.otherwise('home');
 
 }]);
@@ -47,6 +52,7 @@ app.factory('frontend_server', ['$http', function($http){
 			return $http({
 				method: 'GET', 
 				url: 'results',
+				// url: 'results?line='+req.line+'&&subline='+req.subline+'&&direction='+req.direction+'&&startStop='+req.startStop+'&&endStop='+req.endStop,
 				params : req
 			});
 		}
@@ -58,15 +64,15 @@ app.factory('frontend_server', ['$http', function($http){
 // When moving to another page you are accessing a different $scope
 // so the data will not be there. Use a service to get around this problem
 // Then inject GlobalState into controller and set $scope.results = GlobalState.results
-app.factory('GlobalState', [function() {
-   return {
-       results: null
-   };
-}]);
+// app.factory('GlobalState', [function() {
+//    return {
+//        results: null
+//    };
+// }]);
 
 
 
-app.controller('MainCtrl', ['$scope', '$state', 'frontend_server', 'GlobalState', function($scope, $state, frontend_server, GlobalState){
+app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', function($scope, $state, $location, frontend_server){
 
 	// Page title
 	$scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
@@ -189,47 +195,48 @@ app.controller('MainCtrl', ['$scope', '$state', 'frontend_server', 'GlobalState'
 		} 
 	}
 
+
 	// Communication bewteen UI and Angular
 	// Gets JSON object from FE server
 	$scope.getResults = function() {
+
+		// This makes url dynamic
+		// I am trying to map the scope values to the URL values
+		$scope.pickedColor = $location.search('line', $scope.pickedColor);
+		$scope.pickedSubline = $location.search('subline', $scope.pickedSubline);
+		$scope.pickedDirection = $location.search('direction', $scope.pickedDirection);
+		$scope.pickedStartStop = $location.search('startStop', $scope.pickedStartStop);
+		$scope.pickedEndStop = $location.search('endStop', $scope.pickedEndStop);
+
 		frontend_server.getResults($scope.pickedColor, $scope.pickedSubline, $scope.pickedDirection, $scope.pickedStartStop, $scope.pickedEndStop)
 		.success(function(data) {
-			GlobalState.results = data;
-			$state.go('resultsPage');
+			$scope.results = data;
+
+			// v This is if I want results to be shown on a new page
+			//GlobalState.results = data;
+			//$state.go('resultsPage');
+
+			
+
 		}).error(function(err) {
-			GlobalState.results = {
+			//GlobalState.results = {
+			$scope.results = {
 				"Result": "Internal error"
 			};
 		});
 
-		// Resets the form fields to blank
-		$scope.pickedColor = 'default';
-		$scope.pickedSubline = '';
-		$scope.pickedDirection = '';
-		$scope.pickedStartStop = '';
-		$scope.pickedEndStop = '';
+
+
+		// // Resets the form fields to blank
+		// $scope.pickedColor = 'default';
+		// $scope.pickedSubline = '';
+		// $scope.pickedDirection = '';
+		// $scope.pickedStartStop = '';
+		// $scope.pickedEndStop = '';
 	};
 
-	$scope.results = GlobalState.results;
+	// $scope.results = GlobalState.results;
 
-	// $scope.getResults = function() {
-	// 	frontend_server.getResults($scope.pickedColor, $scope.pickedSubline, $scope.pickedDirection, $scope.pickedStartStop, $scope.pickedEndStop)
-	// 	.success(function(data) {
-	// 		$scope.results = data;
-	// 		$state.go('resultsPage');
-	// 	}).error(function(err) {
-	// 		$scope.results = {
-	// 			"Result": "Internal error"
-	// 		};
-	// 	});
-
-	// 	// Resets the form fields to blank
-	// 	$scope.pickedColor = '';
-	// 	$scope.pickedSubline = '';
-	// 	$scope.pickedDirection = '';
-	// 	$scope.pickedStartStop = '';
-	// 	$scope.pickedEndStop = '';
-	// };
 
 
 	// Client side input validation
