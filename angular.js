@@ -196,17 +196,39 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 	}
 
 
+  var params = $location.search()
+  if (params.line) {
+    $scope.pickedColor = params.line;
+  }
+
+  if (params.subline) {
+    $scope.pickedSubline = params.subline
+  }
+
+  if (params.direction) {
+    $scope.pickedDirection = params.direction;
+  }
+
+  if (params.startStop) {
+    $scope.pickedStartStop =params.startStop;
+  }
+
+  if (params.endStop) {
+    $scope.pickedEndStop = params.endStop;
+  }
+
 	// Communication bewteen UI and Angular
 	// Gets JSON object from FE server
 	$scope.getResults = function() {
 
 		// This makes url dynamic
 		// I am trying to map the scope values to the URL values
-		$scope.pickedColor = $location.search('line', $scope.pickedColor);
-		$scope.pickedSubline = $location.search('subline', $scope.pickedSubline);
-		$scope.pickedDirection = $location.search('direction', $scope.pickedDirection);
-		$scope.pickedStartStop = $location.search('startStop', $scope.pickedStartStop);
-		$scope.pickedEndStop = $location.search('endStop', $scope.pickedEndStop);
+		$location.search('line', $scope.pickedColor);
+		$location.search('subline', $scope.pickedSubline);
+		$location.search('direction', $scope.pickedDirection);
+		$location.search('startStop', $scope.pickedStartStop);
+		$location.search('endStop', $scope.pickedEndStop);
+
 
 		frontend_server.getResults($scope.pickedColor, $scope.pickedSubline, $scope.pickedDirection, $scope.pickedStartStop, $scope.pickedEndStop)
 		.success(function(data) {
