@@ -1,5 +1,7 @@
 package com.mbta.api;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.logging.Level;
@@ -32,7 +34,7 @@ public class StopsByRoute {
 				.append(encodeRouteID).toString();
 		// set the requestURL
 		String requestURL = ConstDefine.mbtaBaseURI + endPointName
-				+ ConstDefine.apiKey + parameter + ConstDefine.format;
+				+ ConstDefine.apiKey2 + parameter + ConstDefine.format;
 		// requestURL = requestURL.replaceAll(" ", "%20");
 		// System.out.println("\nStops By Route Request URL: \n" + requestURL);
 
@@ -53,6 +55,12 @@ public class StopsByRoute {
 					String json = EntityUtils.toString(entity);
 					// System.out.println("\nStops By Route " + route_id +
 					// " JSON:\n" + json + "\n");
+					
+					// write json to a txt file
+					BufferedWriter writer = new BufferedWriter(new FileWriter(
+							route_id + ".txt"));
+					writer.write(json);
+					writer.close();
 
 					ObjectMapper mapper = new ObjectMapper();
 					// JSON from String to Object

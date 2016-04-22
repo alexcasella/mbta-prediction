@@ -1,5 +1,7 @@
 package com.mbta.api;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +28,7 @@ public class Routes {
 		String endPointName = Routes.class.getSimpleName().toLowerCase();
 		// set the requestURL
 		String requestURL = ConstDefine.mbtaBaseURI + endPointName
-				+ ConstDefine.apiKey + ConstDefine.format.substring(1);
+				+ ConstDefine.apiKey2 + ConstDefine.format.substring(1);
 		// System.out.println("\nAll Routes Request URL:\n" + requestURL);
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -45,6 +47,12 @@ public class Routes {
 				// convert to Json String
 				String json = EntityUtils.toString(entity);
 				// System.out.println("\nRoutes JSON:\n" + json + "\n");
+
+				// write json to a txt file
+				BufferedWriter writer = new BufferedWriter(new FileWriter(
+						"AllRoutes.txt"));
+				writer.write(json);
+				writer.close();
 
 				ObjectMapper mapper = new ObjectMapper();
 				// JSON from String to Object
