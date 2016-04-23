@@ -1,5 +1,8 @@
 package com.mbta.dbmapper;
 
+import java.util.Map;
+import java.util.Set;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
@@ -14,9 +17,7 @@ public class AllStopsMapper {
 
 	private String direction_id;
 
-	private String route_id;
-
-	private String route_name;
+	private Map<String, String> routes;
 
 	private String last_modified;
 
@@ -46,23 +47,14 @@ public class AllStopsMapper {
 	public void setDirection_id(String direction_id) {
 		this.direction_id = direction_id;
 	}
-
-	@DynamoDBAttribute(attributeName = "route_id")
-	public String getRoute_id() {
-		return route_id;
+	
+	@DynamoDBAttribute(attributeName = "routes")
+	public Map<String, String> getRoutes() {
+		return routes;
 	}
 
-	public void setRoute_id(String route_id) {
-		this.route_id = route_id;
-	}
-
-	@DynamoDBAttribute(attributeName = "route_name")
-	public String getRoute_name() {
-		return route_name;
-	}
-
-	public void setRoute_name(String route_name) {
-		this.route_name = route_name;
+	public void setRoutes(Map<String, String> routes) {
+		this.routes = routes;
 	}
 
 	@DynamoDBAttribute(attributeName = "last_modified")

@@ -15,6 +15,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
@@ -72,7 +73,7 @@ public class AllStops extends Thread {
 				insertItems();
 
 				Thread.sleep(1000L * 60L * 60L * 24L * 7L);
-				// For debug 
+				// For debug
 				// Thread.sleep(1000L * 15L);
 
 			} catch (InterruptedException ie) {
@@ -93,7 +94,7 @@ public class AllStops extends Thread {
 
 			long now = new Date().getTime() / 1000;
 			String last_modified = Long.toString(now);
-			
+
 			int counter = 0;
 
 			for (ModeEntity modeFromAllRoute : allRoutes.getMode()) {
@@ -105,27 +106,64 @@ public class AllStops extends Thread {
 
 						StopsByRouteEntity stop_list = StopsByRoute
 								.getStop(routeFromAllRoute.getRoute_id());
+						// System.out.println(routeFromAllRoute.getRoute_id());
+
 						for (DirectionEntity directionFromSBR : stop_list
 								.getDirection()) {
 
 							for (StopEntity stop : directionFromSBR.getStop()) {
-								AllStopsMapper asm = new AllStopsMapper();
-								asm.setStop_id(stop.getStop_id());
-								asm.setStop_name(stop.getStop_name());
-								asm.setDirection_id(directionFromSBR
-										.getDirection_id());
-								asm.setRoute_id(routeFromAllRoute.getRoute_id());
-								asm.setRoute_name(routeFromAllRoute
-										.getRoute_name());
-								asm.setLast_modified(last_modified);
 
-								counter++;
-								mapper.save(asm);
+								String stop_id = stop.getStop_id();
+								String direction_id = directionFromSBR
+										.getDirection_id();
+								// query if the stop has in the table
+								Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+								eav.put(":val1",
+										new AttributeValue().withS(stop_id));
+								eav.put(":val2", new AttributeValue()
+										.withS(direction_id));
+
+								DynamoDBQueryExpression<AllStopsMapper> queryExpression = new DynamoDBQueryExpression<AllStopsMapper>()
+										.withKeyConditionExpression(
+												"stop_id = :val1 and direction_id = :val2")
+										.withExpressionAttributeValues(eav);
+
+								List<AllStopsMapper> item = mapper.query(
+										AllStopsMapper.class, queryExpression);
+
+								if (!item.isEmpty()) {
+									AllStopsMapper stopMapper = item.get(0);
+									Map<String, String> routes = stopMapper
+											.getRoutes();
+									routes.put(routeFromAllRoute.getRoute_id(),
+											routeFromAllRoute.getRoute_name());
+									stopMapper.setRoutes(routes);
+									stopMapper.setLast_modified(last_modified);
+
+									mapper.save(stopMapper);
+								} else {
+									AllStopsMapper asm = new AllStopsMapper();
+									asm.setStop_id(stop.getStop_id());
+									asm.setStop_name(stop.getStop_name());
+									asm.setDirection_id(directionFromSBR
+											.getDirection_id());
+									Map<String, String> routes = new HashMap<String, String>();
+									routes.put(routeFromAllRoute.getRoute_id(),
+											routeFromAllRoute.getRoute_name());
+									asm.setRoutes(routes);
+									asm.setLast_modified(last_modified);
+
+									counter++;
+									mapper.save(asm);
+								}
+
 							}
 						}
 					}
 				}
 			}
+			// System.out.println(counter + " items in " + tableName +
+			// " saved.");
 			logger.info(counter + " items in " + tableName + " saved.");
 
 		} catch (Exception e) {
@@ -151,6 +189,8 @@ public class AllStops extends Thread {
 		for (AllStopsMapper stop : allStops) {
 			mapper.delete(stop);
 		}
+		// System.out.println(allStops.size() + " items in " + tableName
+		// + " cleaned.");
 		logger.info(allStops.size() + " items in " + tableName + " cleaned.");
 
 	}
@@ -180,8 +220,7 @@ public class AllStops extends Thread {
 							new ProvisionedThroughput().withReadCapacityUnits(
 									5L).withWriteCapacityUnits(6L));
 
-			logger.info("Issuing CreateTable request for "
-					+ tableName);
+			logger.info("Issuing CreateTable request for " + tableName);
 			Table table = dynamoDB.createTable(request);
 
 			// Wait for it to become active

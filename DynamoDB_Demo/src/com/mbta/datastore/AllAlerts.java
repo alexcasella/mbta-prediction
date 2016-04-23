@@ -1,6 +1,7 @@
 package com.mbta.datastore;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -56,19 +57,32 @@ public class AllAlerts extends Thread {
 			try {
 
 				init();
-				if (!Tables.doesTableExist(dynamo, tableName)) {
-					logger.info(tableName
-							+ " not exist, creat table and activate...");
-					createTable();
-				}
-				logger.info(tableName
-						+ " already exist, clean table and create items...");
-				 scanAndDeleteItems();
-				 insertItems();
 
-				Thread.sleep(1000L * 60L * 5L);
-				// For debug
-				// Thread.sleep(1000L * 30L );
+				Calendar rightNow = Calendar.getInstance();
+				int hour = rightNow.get(Calendar.HOUR_OF_DAY);
+				if (hour >= 5 || hour <= 2) {
+
+					if (!Tables.doesTableExist(dynamo, tableName)) {
+						logger.info(tableName
+								+ " not exist, creat table and activate...");
+						createTable();
+					}
+					logger.info(tableName
+							+ " already exist, clean table and create items...");
+					scanAndDeleteItems();
+					insertItems();
+
+					Thread.sleep(1000L * 60L * 15L);
+					// For debug
+					// System.out.println(minute + " in alerts not pause");
+					// Thread.sleep(1000L * 30L);
+
+				}
+
+				else {
+					// sleep an hour
+					Thread.sleep(1000L * 60L * 60L);
+				}
 
 			} catch (InterruptedException ie) {
 				logger.error(ie.getMessage());
@@ -116,7 +130,7 @@ public class AllAlerts extends Thread {
 				aam.setHeader_text(alert.getHeader_text());
 				aam.setSeverity(alert.getSeverity());
 				aam.setService_effect_text(alert.getService_effect_text());
-				
+
 				Map<String, String> periods = new LinkedHashMap<String, String>();
 				for (EffectPeriodEntity eachperiod : alert.getEffect_periods()) {
 
@@ -134,7 +148,8 @@ public class AllAlerts extends Thread {
 				mapper.save(aam);
 
 			}
-			logger.info(allAlerts.getAlerts().size() + " items in " + tableName + " saved.");
+			logger.info(allAlerts.getAlerts().size() + " items in " + tableName
+					+ " saved.");
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
