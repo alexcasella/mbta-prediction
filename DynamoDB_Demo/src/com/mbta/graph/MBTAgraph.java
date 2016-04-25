@@ -12,12 +12,28 @@ import com.mbta.entity.StopEntity;
  *
  */
 public class MBTAgraph {
+	
+	private static MBTAgraph transportation = null;
 
 	private HashMap<String, Vertex> vertices;
 
 	// Construct a new graph without any vertices or edges
 	public MBTAgraph() {
 		this.vertices = new HashMap<>();
+	}
+	
+	public static MBTAgraph getGraph() {
+		if(transportation == null) {
+			transportation = new MBTAgraph();
+			try {
+				GraphBuilder.loadAPIFile(transportation);
+				System.out.println("build once");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return transportation;
 	}
 
 	// add a vertex to the graph
