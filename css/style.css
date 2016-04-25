@@ -449,7 +449,7 @@ letter-spacing: 0px;
 
 
 /* this is for the map that comes with dropdown */
-#line_img {
+.line_img {
 	max-height: 100%;
 	max-width: 100%;
 }

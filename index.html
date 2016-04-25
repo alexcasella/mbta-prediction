@@ -1,3 +1,9 @@
+<!--
+Author: Alex Casella
+
+Spring 2016
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -172,17 +178,16 @@
 
 								<br>
 
-
-								<label ng-show = "$parent.pickedColor == 'Green'"> Line </label>
+								<div ng-show = "$parent.pickedColor == 'Green'">
+								<label> Line </label>
 								<select ng-model = "$parent.pickedSubline" ng-change = "$parent.setStopSelection()" class = "form-control" 
-									ng-show = "$parent.pickedColor == 'Green'"
 									ng-options = "subline as subline for subline in $parent.sublines">
 
 									<option value="">Select B, C, D, or E </option> 
 								</select>
 
-								<br ng-show = "$parent.pickedColor == 'Green'">
-
+								<br>
+								</div>
 
 								<label> Direction </label>
 								<select id = "pickedDirection" ng-model = "$parent.pickedDirection" ng-change = "$parent.setStopSelection(); validateForm()" class = "form-control"
@@ -194,7 +199,7 @@
 								<br>
 
 
-								<label> Start stop: </label>
+								<label> Start stop </label>
 							    <select id = "pickedStartStop" ng-model="$parent.pickedStartStop" ng-change = "validateForm()" class="form-control"
 							    	ng-options = "stop.stopID as stop.stopName for stop in $parent.stopSelection" required>
 
@@ -204,12 +209,69 @@
 							    <br>
 
 
-							    <label> End stop: </label>
-							    <select id = "pickedEndStop" ng-model="$parent.pickedEndStop" ng-change = "validateForm()" class="form-control"
-							    	ng-options = "stop.stopID as stop.stopName for stop in $parent.stopSelection" required>
+							    <label> Will you transfer lines? </label> <br>
+							    <label class="radio-inline">
+									<input type="radio" ng-model="$parent.switchLines" value = "yes" >Yes</input>
+								</label>
+
+								<label class="radio-inline">
+									<input type= "radio" ng-model = "$parent.switchLines" value = "no" >No</input>
+								</label>	
+
+							    <br>
+							   	<br>
+
+
+							   	<div ng-show = "$parent.switchLines == 'yes'">
+							   	<label> Which color T will you transfer to? </label>
+							    <select ng-model="$parent.pickedColorSwitched" ng-change = "$parent.setStopSelectionSwitched()" class="form-control" 
+							    	ng-options = "line as line for line in $parent.lines">
+							    	
+							    	<option value="" ng-hide = "$parent.pickedColorSwitched">Select MBTA color</option> 
+							    </select>
+
+								<br>
+
+
+								<div ng-show = "$parent.pickedColorSwitched == 'Green'">
+								<label> Line </label>
+								<select ng-model = "$parent.pickedSublineSwitched" ng-change = "$parent.setStopSelectionSwitched()" class = "form-control" 
+									ng-options = "subline as subline for subline in $parent.sublines">
+
+									<option value="">Select B, C, D, or E </option> 
+								</select>
+
+								<br>
+								</div>
+
+								<label> Direction </label>
+								<select ng-model = "$parent.pickedDirectionSwitched" ng-change = "$parent.setStopSelectionSwitched()" class = "form-control"
+									ng-options = "direction as direction for direction in $parent.directions">
+
+									<option value="" ng-hide = "$parent.pickedDirectionSwitched">Choose direction</option> 
+								</select>
+
+								<br>
+								</div>
+
+
+								<div ng-show = "switchLines == 'no'">
+								<label> End stop </label>
+							    <select ng-model="$parent.pickedEndStop" class="form-control"
+							    	ng-options = "stop.stopID as stop.stopName for stop in $parent.stopSelection" >
 
 							    	<option value="" ng-hide = "$parent.pickedEndStop">Choose a stop</option>
 							    </select>
+							    </div>
+							    
+								<div ng-show = "switchLines == 'yes'">
+							    <label> End stop </label>
+							     <select ng-model="$parent.pickedEndStop" class="form-control"
+							    	ng-options = "stop.stopID as stop.stopName for stop in $parent.stopSelectionSwitched">
+
+							    	<option value="" ng-hide = "$parent.pickedEndStop">Choose a stop</option>
+							    </select>
+							    </div>
 
 							    <br>
 
@@ -229,50 +291,6 @@
 					// 	<div class="col-md-8">
 					// 		<form name = "serviceForm" ng-submit = "getResults()">
 
-
-					// 		    <label> Which color T are you on </label>
-					// 		    <select id = "pickedColor2" ng-model="$parent.pickedColor" ng-change = "$parent.setStopSelection(); validateForm()" class="form-control" 
-					// 		    	ng-options = "line as line for line in $parent.lines" required>
-							    	
-					// 		    	<option value="" ng-hide = "$parent.pickedColor">Select MBTA color</option> 
-					// 		    </select>
-
-					// 			<br>
-
-
-					// 			<label ng-show = "$parent.pickedColor == 'Green'"> Line </label>
-					// 			<select ng-model = "$parent.pickedSubline" ng-change = "$parent.setStopSelection()" class = "form-control" 
-					// 				ng-show = "$parent.pickedColor == 'Green'"
-					// 				ng-options = "subline as subline for subline in $parent.sublines">
-
-					// 				<option value="">Select B, C, D, or E </option> 
-					// 			</select>
-
-					// 			<br ng-show = "$parent.pickedColor == 'Green'">
-
-
-					// 			<label> Direction </label>
-					// 			<select id = "pickedDirection2" ng-model = "$parent.pickedDirection" ng-change = "$parent.setStopSelection(); validateForm()" class = "form-control"
-					// 				ng-options = "direction as direction for direction in $parent.directions" required>
-
-					// 				<option value="" ng-hide = "$parent.pickedDirection">Choose direction</option> 
-					// 			</select>
-
-					// 			<br>
-
-					// 		    <label> End stop: </label>
-					// 		    <select id = "pickedEndStop2" ng-model="$parent.pickedEndStop" ng-change = "validateForm()" class="form-control"
-					// 		    	ng-options = "stop.stopID as stop.stopName for stop in $parent.stopSelection" required>
-
-					// 		    	<option value="" ng-hide = "$parent.pickedEndStop">Choose a stop</option>
-					// 		    </select>
-
-					// 		    <br>
-
-					// 			<button type = "submit" ng-click = "validateForm()" class = "btn btn-default">See Results</button> 
-
-					// 			<br>
-					// 			<br>
 					// 		</form>
 					// 	</div>
 					// </div>
@@ -284,17 +302,47 @@
 							<form name = "serviceForm" ng-submit = "getResults()">
 
 
-								<label> What time will you take the T </label>
-							    <select class = "form-control">
-							    	
-							    	<option value="">Choose time</option> 
+								<label> Choose morning, afternoon, or evening </label>
+								<select id = "pickedTimeOfDay3" ng-model = "$parent.pickedTimeOfDay" 
+									class = "form-control" ng-change = "validateForm()"
+							    	ng-options = "timeOfDay as timeOfDay for timeOfDay in $parent.timeOfDays" required>
+
+							    	<option value="" ng-hide = "$parent.pickedTimeOfDay">Choose time of day</option> 
 							    </select>
 
-								<br>
+							    <br>
+
+
+								<label ng-show = "$parent.pickedTimeOfDay"> Pick a time closest to your travel </label>
+							    <select ng-model= "$parent.pickedTime" ng-show = "$parent.pickedTimeOfDay == 'Morning'"
+							    	class = "form-control" 
+							    	ng-options = "time.timeDigit as time.timeOption for time in $parent.timesMorning">
+							    	
+							    	<option value="" ng-hide = "$parent.pickedTime">Choose time</option> 
+							    </select>
+
+
+							    <select ng-model= "$parent.pickedTime" ng-show = "$parent.pickedTimeOfDay == 'Afternoon'"
+							    	class = "form-control" 
+							    	ng-options = "time.timeDigit as time.timeOption for time in $parent.timesAfternoon">
+							    	
+							    	<option value="" ng-hide = "$parent.pickedTime">Choose time</option> 
+							    </select>
+
+							    
+							    <select ng-model= "$parent.pickedTime" ng-show = "$parent.pickedTimeOfDay == 'Evening'"
+							    	class = "form-control" 
+							    	ng-options = "time.timeDigit as time.timeOption for time in $parent.timesEvening">
+							    	
+							    	<option value="" ng-hide = "$parent.pickedTime">Choose time</option> 
+							    </select>
+							    
+								<br ng-show = "$parent.pickedTimeOfDay">
 
 
 							    <label> Which color T will you ride </label>
-							    <select id = "pickedColor3" ng-model="$parent.pickedColor" ng-change = "$parent.setStopSelection(); validateForm()" class="form-control" 
+							    <select id = "pickedColor3" ng-model="$parent.pickedColor" 
+							    	class="form-control" ng-change = "$parent.setStopSelection(); validateForm()" 
 							    	ng-options = "line as line for line in $parent.lines" required>
 							    	
 							    	<option value="" ng-hide = "$parent.pickedColor">Select MBTA color</option> 
@@ -303,15 +351,16 @@
 								<br>
 
 
-								<label ng-show = "$parent.pickedColor == 'Green'"> Line </label>
+								<div ng-show = "$parent.pickedColor == 'Green'">
+								<label> Line </label>
 								<select ng-model = "$parent.pickedSubline" ng-change = "$parent.setStopSelection()" class = "form-control" 
-									ng-show = "$parent.pickedColor == 'Green'"
 									ng-options = "subline as subline for subline in $parent.sublines">
 
 									<option value="">Select B, C, D, or E </option> 
 								</select>
 
-								<br ng-show = "$parent.pickedColor == 'Green'">
+								<br>
+								</div>
 
 
 								<label> Direction </label>
@@ -324,7 +373,7 @@
 								<br>
 
 
-								<label> Start stop: </label>
+								<label> Start stop </label>
 							    <select id = "pickedStartStop3" ng-model="$parent.pickedStartStop" ng-change = "validateForm()" class="form-control"
 							    	ng-options = "stop.stopID as stop.stopName for stop in $parent.stopSelection" required>
 
@@ -334,12 +383,69 @@
 							    <br>
 
 
-							    <label> End stop: </label>
-							    <select id = "pickedEndStop3" ng-model="$parent.pickedEndStop" ng-change = "validateForm()" class="form-control"
-							    	ng-options = "stop.stopID as stop.stopName for stop in $parent.stopSelection" required>
+							    <label> Will you transfer lines? </label> <br>
+							    <label class="radio-inline">
+									<input type="radio" ng-model="$parent.switchLines" value = "yes" >Yes</input>
+								</label>
+
+								<label class="radio-inline">
+									<input type= "radio" ng-model = "$parent.switchLines" value = "no" >No</input>
+								</label>	
+
+							    <br>
+							   	<br>
+
+
+							   	<div ng-show = "$parent.switchLines == 'yes'">
+							   	<label> Which color T will you transfer to? </label>
+							    <select ng-model="$parent.pickedColorSwitched" ng-change = "$parent.setStopSelectionSwitched()" class="form-control" 
+							    	ng-options = "line as line for line in $parent.lines">
+							    	
+							    	<option value="" ng-hide = "$parent.pickedColorSwitched">Select MBTA color</option> 
+							    </select>
+
+								<br>
+
+
+								<div ng-show = "$parent.pickedColorSwitched == 'Green'">
+								<label> Line </label>
+								<select ng-model = "$parent.pickedSublineSwitched" ng-change = "$parent.setStopSelectionSwitched()" class = "form-control" 
+									ng-options = "subline as subline for subline in $parent.sublines">
+
+									<option value="">Select B, C, D, or E </option> 
+								</select>
+
+								<br>
+								</div>
+
+								<label> Direction </label>
+								<select ng-model = "$parent.pickedDirectionSwitched" ng-change = "$parent.setStopSelectionSwitched()" class = "form-control"
+									ng-options = "direction as direction for direction in $parent.directions">
+
+									<option value="" ng-hide = "$parent.pickedDirectionSwitched">Choose direction</option> 
+								</select>
+
+								<br>
+								</div>
+
+
+								<div ng-show = "switchLines == 'no'">
+								<label> End stop </label>
+							    <select ng-model="$parent.pickedEndStop" class="form-control"
+							    	ng-options = "stop.stopID as stop.stopName for stop in $parent.stopSelection" >
 
 							    	<option value="" ng-hide = "$parent.pickedEndStop">Choose a stop</option>
 							    </select>
+							    </div>
+							    
+								<div ng-show = "switchLines == 'yes'">
+							    <label> End stop </label>
+							     <select ng-model="$parent.pickedEndStop" class="form-control"
+							    	ng-options = "stop.stopID as stop.stopName for stop in $parent.stopSelectionSwitched">
+
+							    	<option value="" ng-hide = "$parent.pickedEndStop">Choose a stop</option>
+							    </select>
+							    </div>
 
 							    <br>
 
@@ -355,46 +461,64 @@
 
 
 				<div class = "col-md-7">
-					<img id = "line_img" ng-src="{{getLineUrl($parent.pickedColor)}}" ng-if="$parent.pickedColor">
+					
+					<img class = "line_img" ng-src="{{getLineUrl($parent.pickedColor)}}">
+				
+					<!-- // <img class = "line_img" ng-src="{{getLineUrl($parent.pickedColorSwitched)}}"> -->
 				</div>
 
-
-			<div class = "col-md-12">
-				<table>
-
-					<th> Your selection: </th>
-						<tr>
-							<td> You picked the {{results.Color}} line </td>
-						</tr>
-
-						<tr ng-show = "$parent.pickedColor == 'Green'"> 
-							<td> {{results.Line}} train </td>
-						</tr>	
-
-						<tr> 
-							<td> Going {{results.Direction}}. </td>
-						</tr>
-
-						<tr>
-							<td> Starting at stop {{results.StartStop.stopName}},  going to {{results.EndStop}} </td>
-						</tr>
+		
 
 
-					<th> Our results: </th>
-						<tr>
-							<td> Alert header: {{results.AlertHeader}} </td>
-						</tr>
+				<div class = "col-md-12  container" style = "padding-top: 100px; padding-bottom: 200px; font-size: 150%">
+					
+					<div class="alert alert-danger">
+						<strong> Alert: </strong> {{results.AlertHeader}} 
+						<button ng-click = "toggleAlertDetail()" class = "btn btn-default" 
+							style = "-webkit-appearance: none; outline: none; border: 0; background: transparent;"> 
+							<span class = "glyphicon glyphicon-zoom-in" style = "color: maroon"></span> 
+						</button>
+					</div>
 
-						<tr>
-							<td> Alert detail: {{results.AlertDetail}} </td>
-						</tr>
+					<div class="alert alert-warning" ng-show = "showAlertDetail">
+						<strong> More details: </strong> {{results.AlertDetail}}
+					</div>
 
-						</tr>
-							<td> Prediction: {{results.Prediction}} </td>
-						</tr>
+					<div class="alert alert-info">
+						<strong> Our prediction: </strong> {{results.Prediction}} 
+					</div>
 
-				</table>
+				</div>
 
+				<!-- 
+				// <table>
+				// <th> Your selection: </th>
+				// 	<tr>
+				// 		<td> You picked a time of {{results.Time}} in the {{results.TimeOfDay}}</td>
+				// 	</tr>
+
+				// 	<tr>
+				// 		<td> You picked the {{results.Color}} line </td>
+				// 	</tr>
+
+				// 	<tr ng-show = "$parent.pickedColor == 'Green'"> 
+				// 		<td> {{results.Line}} train </td>
+				// 	</tr>	
+
+				// 	<tr> 
+				// 		<td> Going {{results.Direction}}. </td>
+				// 	</tr>
+
+				// 	<tr>
+				// 		<td> Starting at stop {{results.StartStop}},  going to {{results.EndStop}} </td>
+				// 	</tr> 
+				// </table>
+
+				// <th> Error: </th>
+				// 	<tr>
+				// 		<td> {{results.Error}} </td>
+				// 	</tr>
+				-->
 
 				<br>
 				<br>
@@ -408,54 +532,21 @@
 	</script>
 
 
-	<script type = "text/ng-template" id = "/resultsPage.html">
-		<!-- <div class = "col-md-12" ng-controller = "backgroundImageCtrl" ng-style = "setBackground"> -->
-		<div class = "col-md-12">
-			<table>
+	 
+	<!-- // <script type = "text/ng-template" id = "/resultsPage.html">
+	// 	<div class = "col-md-12" ng-controller = "backgroundImageCtrl" ng-style = "setBackground"> 
+	// 	<div class = "col-md-12">
+	// 		<table>
 
-				<th> Your selection: </th>
-					<tr>
-						<td> You picked the {{results.Color}} line </td>
-					</tr>
+	// 			
+	// 		</table>
 
-					<tr ng-show = "$parent.pickedColor == 'Green'"> 
-						<td> {{results.Line}} train </td>
-					</tr>	
-
-					<tr> 
-						<td> Going {{results.Direction}}. </td>
-					</tr>
-
-					<tr>
-						<td> Starting at stop {{results.StartStop.stopName}},  going to {{results.EndStop}} </td>
-					</tr>
-
-
-				<th> Our results: </th>
-					<tr>
-						<td> Alert header: {{results.AlertHeader}} </td>
-					</tr>
-
-					<tr>
-						<td> Alert detail: {{results.AlertDetail}} </td>
-					</tr>
-
-					</tr>
-						<td> Prediction: {{results.Prediction}} </td>
-					</tr>
-
-			</table>
-
-
-			<br>
-			<br>
-
-			<!-- 
-			// Raw response data
-			// <pre >Response = {{results|json}}</pre> 
-			-->
-		</div>
-	</script>
+	// 		<!-- 
+	// 		// Raw response data
+	// 		// <pre >Response = {{results|json}}</pre> 
+			
+	// 	</div>
+	// </script> -->
 
 
 

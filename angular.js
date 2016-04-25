@@ -1,3 +1,5 @@
+// Author: Alex Casella
+// Date: Spring 2016
 
 var app = angular.module('mbta', ['ui.router']);
 
@@ -32,22 +34,23 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 // Communication between Angular and Node
 app.factory('frontend_server', ['$http', function($http){
 	return { 
-		getResults : function(line, subline, direction, startStop, endStop) {
+		getResults : function(line, subline, direction, startStop, endStop, time, timeOfDay) {
+
 			var req = {};
 
-			if (line !== '') req.line = line;
+			if (line) req.line = line;
 			
-			if (subline !== '') {
-				req.subline = subline;
-			} else {
-				req.subline = 'N/A';
-			}
+			if (subline) req.subline = subline;
 
-			if (direction !== '') req.direction = direction;
+			if (direction) req.direction = direction;
 
-			if (startStop !== '') req.startStop = startStop;
+			if (startStop) req.startStop = startStop;
 
-			if (endStop !== '') req.endStop = endStop;
+			if (endStop) req.endStop = endStop;
+
+			req.timeOfDay = timeOfDay;
+			req.time = time;
+
 
 			return $http({
 				method: 'GET', 
@@ -81,6 +84,22 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 		}
 	});
 
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+	// This will be sent to the FE server
+	$scope.pickedColor = 'default';
+	$scope.pickedSubline = '';
+	$scope.pickedDirection = '';
+	$scope.pickedStartStop = '';
+	$scope.pickedColorSwitched = '';
+	$scope.pickedSublineSwitched = '';
+	$scope.pickedDirectionSwitched = '';
+	$scope.pickedEndStop = '';
+
+	$scope.switchLines = ['yes', 'no'];
+
 	// colors
 	$scope.lines = ['Green', 'Red', 'Blue', 'Orange'];
 
@@ -90,6 +109,8 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 	$scope.directions = ['Inbound', 'Outbound'];
 
 	$scope.stopSelection = [];
+
+	$scope.stopSelectionSwitched = [];
 
 	var stops = {
 		'GreenBInbound': [{"stopName": "South Street", "stopID": "70110"}, {"stopName": "Boston Univ. East", "stopID": "70146"}, {"stopName": "Arlington", "stopID": "70156"}, 
@@ -174,71 +195,167 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 		{"stopName": "Massachusetts Ave.", "stopID": "70012"}]
 	};
 
-	// This will be sent to the FE server
-	$scope.pickedColor = 'default';
-	$scope.pickedSubline = '';
-	$scope.pickedDirection = '';
-	$scope.pickedStartStop = '';
-	$scope.pickedEndStop = '';
-
 	$scope.setStopSelection = function() {
-		if ($scope.pickedColor !== 'default' && $scope.pickedSubline && $scope.pickedDirection) { // Green line
+		if ($scope.pickedColor && $scope.pickedSubline && $scope.pickedDirection) { // Green line
 
-			// console.log("true");
 			// console.log($scope.pickedColor + $scope.pickedSubline + $scope.pickedDirection);
 			// console.log(stops[$scope.pickedColor + $scope.pickedSubline + $scope.pickedDirection]);
 
 			$scope.stopSelection = stops[$scope.pickedColor + $scope.pickedSubline + $scope.pickedDirection];
-			// console.log($scope.stopSelection);
+
 		} else if ($scope.pickedColor && $scope.pickedDirection) { // Red, Blue, Orange lines
+
 			$scope.stopSelection = stops[$scope.pickedColor + $scope.pickedDirection];
 		} 
 	}
 
+	$scope.setStopSelectionSwitched = function() {
+		if ($scope.pickedColorSwitched && $scope.pickedSublineSwitched && $scope.pickedDirectionSwitched) {
 
-  var params = $location.search()
-  if (params.line) {
-    $scope.pickedColor = params.line;
-  }
+			$scope.stopSelectionSwitched = stops[$scope.pickedColorSwitched + $scope.pickedSublineSwitched + $scope.pickedDirectionSwitched];
 
-  if (params.subline) {
-    $scope.pickedSubline = params.subline
-  }
+		} else if ($scope.pickedColorSwitched && $scope.pickedDirectionSwitched) { 
 
-  if (params.direction) {
-    $scope.pickedDirection = params.direction;
-  }
+			$scope.stopSelectionSwitched = stops[$scope.pickedColorSwitched + $scope.pickedDirectionSwitched];
+		} 
+	}
+	
 
-  if (params.startStop) {
-    $scope.pickedStartStop =params.startStop;
-  }
+	$scope.timeOfDays = ['Morning', 'Afternoon', 'Evening'];
 
-  if (params.endStop) {
-    $scope.pickedEndStop = params.endStop;
-  }
+	$scope.timesMorning = [{"timeOption": "5:00 AM", "timeDigit": "5"}, {"timeOption": "5:30 AM", "timeDigit": "530"}, {"timeOption": "6:00 AM", "timeDigit": "6"}, 
+	{"timeOption": "6:30 AM", "timeDigit": "630"}, {"timeOption": "7:00 AM", "timeDigit": "7"}, {"timeOption": "7:30 AM", "timeDigit": "730"}, {"timeOption": "8:00 AM", "timeDigit": "8"}, 
+	{"timeOption": "8:30 AM", "timeDigit": "830"},{"timeOption": "9:00 AM", "timeDigit": "9"}, {"timeOption": "9:30 AM", "timeDigit": "930"}, 
+	 {"timeOption": "10:00 AM", "timeDigit": "10"}, {"timeOption": "10:30 AM", "timeDigit": "1030"}, {"timeOption": "11:00 AM", "timeDigit": "11"}, {"timeOption": "11:30 AM", "timeDigit": "1130"}];
+
+	$scope.timesAfternoon = [{"timeOption": "12:00 PM", "timeDigit": "12"}, {"timeOption": "12:30 PM", "timeDigit": "1230"}, 
+	{"timeOption": "1:00 PM", "timeDigit": "13"}, {"timeOption": "1:30 PM", "timeDigit": "1330"}, {"timeOption": "2:00 PM", "timeDigit": "14"}, 
+	{"timeOption": "2:30 PM", "timeDigit": "1430"}, {"timeOption": "3:00 PM", "timeDigit": "15"}, {"timeOption": "3:30 PM", "timeDigit": "1530"}, 
+	{"timeOption": "4:00 PM", "timeDigit": "16"}, {"timeOption": "4:30 PM", "timeDigit": "1630"}];
+
+	$scope.timesEvening = [{"timeOption": "5:00 PM", "timeDigit": "17"}, {"timeOption": "5:30 PM", "timeDigit": "1730"}, {"timeOption": "6:00 PM", "timeDigit": "18"},
+	{"timeOption": "6:30 PM", "timeDigit": "1830"}, {"timeOption": "7:00 PM", "timeDigit": "19"}, {"timeOption": "7:30 PM", "timeDigit": "1930"}, 
+	{"timeOption": "8:00 PM", "timeDigit": "20"}, {"timeOption": "8:30 PM", "timeDigit": "2030"}, {"timeOption": "9:00 PM", "timeDigit": "21"},
+	{"timeOption": "9:30 PM", "timeDigit": "2130"}, {"timeOption": "10:00 PM", "timeDigit": "22"}, {"timeOption": "10:30 PM", "timeDigit": "2230"}, 
+	{"timeOption": "11:00 PM", "timeDigit": "23"}, {"timeOption": "11:30 PM", "timeDigit": "2330"}, {"timeOption": "12:00 AM", "timeDigit": "0"}, 
+	{"timeOption": "12:30 AM", "timeDigit": "030"}, {"timeOption": "1:00 AM", "timeDigit": "1"}];
+
+
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	// maps URL to dropdown
+	var params = $location.search()
+
+	if (params.time) {
+		$scope.pickedTime = params.time;
+	}
+
+	if (params.timeOfDay) {
+		$scope.pickedTimeOfDay = params.timeOfDay;
+	}
+
+	if (params.line) {
+		$scope.pickedColor = params.line;
+	}
+
+	if (params.subline) {
+		$scope.pickedSubline = params.subline;
+	}
+
+	if (params.direction) {
+		$scope.pickedDirection = params.direction;
+	}
+
+	if (params.startStop) {
+		if ($scope.pickedColor !== 'default' && $scope.pickedSubline && $scope.pickedDirection) { 
+
+			$scope.stopSelection = stops[$scope.pickedColor + $scope.pickedSubline + $scope.pickedDirection];
+
+		} else if ($scope.pickedColor && $scope.pickedDirection) { 
+
+			$scope.stopSelection = stops[$scope.pickedColor + $scope.pickedDirection];
+		} 
+		
+		$scope.pickedStartStop = params.startStop;
+	}
+
+	if (params.endStop) {
+		if ($scope.pickedColor !== 'default' && $scope.pickedSubline && $scope.pickedDirection) { 
+
+			$scope.stopSelection = stops[$scope.pickedColor + $scope.pickedSubline + $scope.pickedDirection];
+
+		} else if ($scope.pickedColor && $scope.pickedDirection) { 
+
+			$scope.stopSelection = stops[$scope.pickedColor + $scope.pickedDirection];
+		} 
+		
+		$scope.pickedEndStop = params.endStop;
+	}
+
+	if (params.switchLines) {
+		$scope.switchLines = params.switchLines;
+	}
+
+	if (params.line2) {
+		$scope.pickedColorSwitched = params.line2;
+	}
+
+	if (params.subline2) {
+		$scope.pickedSublineSwitched = params.subline2;
+	}
+
+	if (params.direction2) {
+		$scope.pickedDirectionSwitched = params.direction2;
+	}
+
+	if (params.switchLines === 'yes' && params.endStop) {
+		if ($scope.switchLines && $scope.pickedColorSwitched && $scope.pickedSublineSwitched && $scope.pickedDirectionSwitched) { 
+
+			$scope.stopSelectionSwitched = stops[$scope.pickedColorSwitched + $scope.pickedSublineSwitched + $scope.pickedDirectionSwitched];
+
+		} else if ($scope.pickedColorSwitched && $scope.pickedDirectionSwitched) { 
+
+			$scope.stopSelectionSwitched = stops[$scope.pickedColorSwitched + $scope.pickedDirectionSwitched];
+		} 
+		
+		$scope.pickedEndStop = params.endStop;
+	}
+
+
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 	// Communication bewteen UI and Angular
 	// Gets JSON object from FE server
 	$scope.getResults = function() {
 
 		// This makes url dynamic
-		// I am trying to map the scope values to the URL values
+		$location.search('timeOfDay', $scope.pickedTimeOfDay);
+		$location.search('time', $scope.pickedTime);
 		$location.search('line', $scope.pickedColor);
 		$location.search('subline', $scope.pickedSubline);
 		$location.search('direction', $scope.pickedDirection);
 		$location.search('startStop', $scope.pickedStartStop);
+		$location.search('switchLines', $scope.switchLines);
+		$location.search('line2', $scope.pickedColorSwitched);
+		$location.search('subline2', $scope.pickedSublineSwitched);
+		$location.search('direction2', $scope.pickedDirectionSwitched);
 		$location.search('endStop', $scope.pickedEndStop);
+		
 
-
-		frontend_server.getResults($scope.pickedColor, $scope.pickedSubline, $scope.pickedDirection, $scope.pickedStartStop, $scope.pickedEndStop)
+		frontend_server.getResults(
+			$scope.pickedColor, $scope.pickedSubline, $scope.pickedDirection, 
+			$scope.pickedStartStop, $scope.pickedEndStop, $scope.pickedTime, 
+			$scope.pickedTimeOfDay)
 		.success(function(data) {
+			
 			$scope.results = data;
 
 			// v This is if I want results to be shown on a new page
 			//GlobalState.results = data;
 			//$state.go('resultsPage');
-
-			
 
 		}).error(function(err) {
 			//GlobalState.results = {
@@ -246,19 +363,13 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 				"Result": "Internal error"
 			};
 		});
-
-
-
-		// // Resets the form fields to blank
-		// $scope.pickedColor = 'default';
-		// $scope.pickedSubline = '';
-		// $scope.pickedDirection = '';
-		// $scope.pickedStartStop = '';
-		// $scope.pickedEndStop = '';
 	};
 
 	// $scope.results = GlobalState.results;
 
+
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 	// Client side input validation
@@ -290,41 +401,19 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 			startstopSelection.setCustomValidity("");
 		}
 
-		var endstopSelection = document.getElementById("pickedEndStop");
-
-		if (endstopSelection.validity.valueMissing) {
-			endstopSelection.setCustomValidity("Please choose an ending stop");
-		} else {
-			endstopSelection.setCustomValidity("");
-		}
 
 		// Menu 2
 
-		// var colorSelection = document.getElementById("pickedColor2");
-
-		// if (colorSelection.validity.valueMissing) {
-		// 	colorSelection.setCustomValidity("Please select a MBTA color");
-		// } else {
-		// 	colorSelection.setCustomValidity("");
-		// }
-
-		// var directionSelection = document.getElementById("pickedDirection2");
-
-		// if (directionSelection.validity.valueMissing) {
-		// 	directionSelection.setCustomValidity("Please select a direction of travel");
-		// } else {
-		// 	directionSelection.setCustomValidity("");
-		// }
-
-		// var endstopSelection = document.getElementById("pickedEndStop2");
-
-		// if (endstopSelection.validity.valueMissing) {
-		// 	endstopSelection.setCustomValidity("Please choose an ending stop");
-		// } else {
-		// 	endstopSelection.setCustomValidity("");
-		// }
 
 		// Menu 3
+
+		var timeSelection = document.getElementById("pickedTimeOfDay3");
+
+		if (timeSelection.validity.valueMissing) {
+			timeSelection.setCustomValidity("Please select a time of travel");
+		} else {
+			timeSelection.setCustomValidity("");
+		}
 
 		var colorSelection = document.getElementById("pickedColor3");
 
@@ -349,16 +438,10 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 		} else {
 			startstopSelection.setCustomValidity("");
 		}
-
-		var endstopSelection = document.getElementById("pickedEndStop3");
-
-		if (endstopSelection.validity.valueMissing) {
-			endstopSelection.setCustomValidity("Please choose an ending stop");
-		} else {
-			endstopSelection.setCustomValidity("");
-		}
 	}
 }]);
+
+
 
 // For toggling between services and changing lines to display maps
 app.controller('serviceCtrl', ['$scope', function($scope){
@@ -385,13 +468,21 @@ app.controller('serviceCtrl', ['$scope', function($scope){
 	$scope.toggleMenu = function(val){
 		$scope.model.showmenu = val;
 	};
+
+
+	// Toggle alert detail
+	$scope.showAlertDetail = false;
+
+	$scope.toggleAlertDetail = function() {
+        $scope.showAlertDetail = !$scope.showAlertDetail;
+    };
 }]);
 
 
-app.controller('backgroundImageCtrl', function($scope, $http) {
+// app.controller('backgroundImageCtrl', function($scope, $http) {
 
-    $scope.setBackground = {
-        'background' : 'url(/images/mbta_map.jpg)'
-    };
+//     $scope.setBackground = {
+//         'background' : 'url(/images/mbta_map.jpg)'
+//     };
 
-})
+// })

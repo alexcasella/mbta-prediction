@@ -1,3 +1,6 @@
+// Author: Alex Casella
+// Date: Spring 2016
+
 var express = require("express");
 var app = express();
 var request = require('request');
@@ -24,31 +27,37 @@ app.get("/results", function (req, res) {
 	// }
 	
 
+	// if (typeof req.query.line === undefined || typeof req.query.startStop === undefined ||
+	// 	typeof req.query.line === "undefined" || typeof req.query.startStop === "undefined" ||
+	// 	req.query.line === "" || req.query.startStop === "") {
 
-	// Server side error validation to make sure the line and start stop is not empty
-	if (typeof req.query.line === undefined || typeof req.query.startStop === undefined ||
-		typeof req.query.line === "undefined" || typeof req.query.startStop === "undefined" ||
-		req.query.line === "" || req.query.startStop === "") {
+	// 	res.json({
+	// 		Error: "Must pick MBTA line color and starting stop!"
+	// 	});
+	// } else {
 
-		res.json({
-			Error: "Must pick MBTA line color and starting stop!"
-		});
-	} else if (req.query.subline == 'N/A') {
-		// console.log(req.query.line);
-		// console.log(req.query.startStop);
-		var alertHeader = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/alertHeader/' + req.query.line + '/' + req.query.startStop;
-		var alertDetail = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/alertDetail/' + req.query.line + '/' + req.query.startStop;
-		var prediction = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/prediction/' + req.query.line + '/' + req.query.startStop;
+	// }
+
+
+	var alertHeader = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/Allalerts/header/' + req.query.startStop + '/' + req.query.endStop;
+	var alertDetail = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/Allalerts/detail/' + req.query.startStop + '/' + req.query.endStop;
+
+	if (req.query.subline && req.query.time) {
+		var prediction = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/AllPrediction/' + req.query.line + req.query.subline + '/' + req.query.startStop + '/' + req.query.endStop + '/' + req.query.time;
+	} else if (req.query.subline) {
+		var prediction = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/AllPrediction/' + req.query.line + req.query.subline + '/' + req.query.startStop + '/' + req.query.endStop;
+	} else if (req.query.time) {
+		var prediction = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/AllPrediction/' + req.query.line + '/' + req.query.startStop + '/' + req.query.endStop + '/' + req.query.time;
 	} else {
-		var alertHeader = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/alertHeader/' + req.query.line + req.query.subline + '/' + req.query.startStop;
-		var alertDetail = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/alertDetail/' + req.query.line + req.query.subline + '/' + req.query.startStop;
-		var prediction = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/prediction/' + req.query.line + req.query.subline + '/' + req.query.startStop;
+		var prediction = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/AllPrediction/' + req.query.line + '/' + req.query.startStop + '/' + req.query.endStop;
 	};
 
 
+	console.log("----------------------------------------------------------------------------------------------------------------------------");
 	console.log("Alert Header API: " + alertHeader); 
 	console.log("Alert Detail API: " + alertDetail);
 	console.log("Prediction API:   " + prediction);
+	console.log("----------------------------------------------------------------------------------------------------------------------------");
 
 
 	request(alertHeader, function (error, response, alertHeader) { //might need to type cast query as string as requst is expecting a string
@@ -70,6 +79,8 @@ app.get("/results", function (req, res) {
 					        console.log(prediction);
 
 							res.json({
+								TimeOfDay: req.query.timeOfDay,
+								Time: req.query.time,
 								Color: req.query.line, 
 								Line: req.query.subline,
 								Direction: req.query.direction,
@@ -89,6 +100,8 @@ app.get("/results", function (req, res) {
 					    	console.log(error);
 
 					    	res.json({
+					    		TimeOfDay: req.query.timeOfDay,
+					    		Time: req.query.time,
 								Color: req.query.line, 
 								Line: req.query.subline,
 								Direction: req.query.direction,
@@ -109,6 +122,8 @@ app.get("/results", function (req, res) {
 			    	console.log(error);
 
 			    	res.json({
+			    		TimeOfDay: req.query.timeOfDay,
+			    		Time: req.query.time,
 						Color: req.query.line, 
 						Line: req.query.subline,
 						Direction: req.query.direction,
@@ -128,6 +143,8 @@ app.get("/results", function (req, res) {
 	    	console.log(error);
 
 	    	res.json({
+	    		TimeOfDay: req.query.timeOfDay,
+	    		Time: req.query.time,
 				Color: req.query.line, 
 				Line: req.query.subline,
 				Direction: req.query.direction,
