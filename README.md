@@ -3,9 +3,9 @@ A project of EC500 (cloud computing), this is a web application that aims to pro
 
 
 ## In branch ui-angular, you can fine the latest UI. Do not use the UI files from Master! To run UI. 
- +1. Make sure you have Node.js downloaded on your machine. 
- +2. cd to folder, run command     node server.js
- +3. On browser go to        localhost:3000
+ * Make sure you have Node.js downloaded on your machine. 
+ * cd to folder, run command     node server.js
+ * On browser go to        localhost:3000
  
 
 ## In branch RestAPI, the file messenger-2 is the Restful API.
@@ -16,10 +16,10 @@ By extracting the file as  a .war file, we can deploy it on AWS Elastic Beanstal
 It can be opened in Eclipse luna IDE and our java SE version is 1.7.0_79.
 By extracting the file as a .jar file, we can ran it on EC2.
 Firstly getting the MBTAkeypair.pem file from AWS, then the steps are
-1. scp -i MBTAkeypair.pem ~/Desktop/database.jar ec2-user@52.35.245.109:~
-2. ssh -i MBTAkeypair.pem ec2-user@ec2-52-35-245-109.us-west-2.compute.amazonaws.com 
-3. sudo yum install java
-4. nohup java -jar database.jar & > /dev/null &
+* scp -i MBTAkeypair.pem ~/Desktop/database.jar ec2-user@52.35.245.109:~
+* ssh -i MBTAkeypair.pem ec2-user@ec2-52-35-245-109.us-west-2.compute.amazonaws.com 
+* sudo yum install java
+* nohup java -jar database.jar & > /dev/null &
 We can also check the daily log at the same directry.
 
 
