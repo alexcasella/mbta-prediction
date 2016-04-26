@@ -1,6 +1,9 @@
 ## Visualzing MBTA Performance
 A project of EC500 (cloud computing), this is a web application that aims to provide accurate prediction to users of Massacheustes Bay Transportation Authority train network. The application will predict estimated time of arrival and commute after taking into account the various effecting factors.  
 
+Demo website:
+[http://129.10.3.103:3000/#/home](http://129.10.3.103:3000/#/home)
+
 
 ### Branch: ui-angular
 In branch ui-angular, you can fine the latest UI. Do not use the UI files from Master! To run UI.
