@@ -3,6 +3,13 @@ Date: Spring 2016
 
 
 
+------------- To Run -------------
+
+1. Make sure you have Node.js downloaded on your machine. 
+2. cd to folder, run command     node server.js
+3. On browser go to        localhost:3000
+
+
 ------------- Architecture and goals -------------
 
 - I am solely responsible for the User Interface and the front end server. The front end server takes user requests from the UI and makes RESTful API calls to the backend and returns JSON results to the UI. It links together various parts of this project. The UI is written in AngularJS and the front end server is written in Node.js.
