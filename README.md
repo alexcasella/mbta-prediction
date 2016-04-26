@@ -7,10 +7,10 @@ Demo website:
 ### Branch: Master
 This branch contains the progress of the project uptill Sprint 3, the first version of Boston Now. For the latest files please use Branch ui-angular !
 Contents ->
-1) The NodeJS front end server. 
-2) User Interface.
-3) Java API.
-4) Supporting scripts to parse and format data.
+ * Run app.js for the The NodeJS front end server. 
+ * Index.html for the User interface.
+ * messenger.war is the Jersey Java api 
+ * Supporting scripts to parse and format data.
 
 
 ### Branch: ui-angular
