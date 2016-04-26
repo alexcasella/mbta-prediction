@@ -4,6 +4,14 @@ A project of EC500 (cloud computing), this is a web application that aims to pro
 Demo website:
 [http://129.10.3.103:3000/#/home](http://129.10.3.103:3000/#/home)
 
+### Branch: Master
+This branch contains the progress of the project uptill Sprint 3, the first version of Boston Now. For the latest files please use Branch ui-angular !
+Contents ->
+1) The NodeJS front end server. 
+2) User Interface.
+3) Java API.
+4) Supporting scripts to parse and format data.
+
 
 ### Branch: ui-angular
 In branch ui-angular, you can fine the latest UI. Do not use the UI files from Master! To run UI.
