@@ -28,6 +28,9 @@ Demo website:
 2. To run the backend server check branch RestAPI (below).
 3. To run the pipeline check check branch pipeline (below).
 
+### MOC:
+The front end server is hosted on a MOC Ubunutu instance. For information on deploying an the MOC please check the MOC [wiki](https://github.com/CCI-MOC/moc-public/wiki/EC500-Instructions). 
+
 ### Branch: Master
 This branch contains the progress of the project uptill Sprint 3, the first version of Boston Now. For the latest files please use Branch ui-angular !
 
