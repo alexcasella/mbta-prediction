@@ -4,12 +4,36 @@ A project of EC500 (cloud computing), this is a web application that aims to pro
 Demo website:
 [http://129.10.3.103:3000/#/home](http://129.10.3.103:3000/#/home)
 
+### Setting the environment:
+
+#### NodeJS
+1. [Install](https://nodejs.org/en/download/) the Node.JS binaries or the installer. 
+2. If the install was successful the Node.JS CLI should be available to you. Check by firing up the terminal
+  `node --version` should give the installed version. 
+3. If the install was successful you should now have the **npm** which is Node's package manager. `npm --version` should confirm this. 
+4. Clone this repo.
+5. Navigate to the root folder in the terminal and type in `npm install`
+6. This should install all the depencies required to run the application. 
+7. There should now be a node_modules folder in your root directory. 
+8. If all the steps were successful you should now be able to launch the application.
+9. In the root directory type in `node server.js`, fire up a browser and hit `http://localhost:3000/`
+
+#### Java
+1. The project is built using JDK 1.7, you will have to download and install it.
+2. Make sure the JAVA_HOME variable points to the JDK 1.7 binary.
+3. Download and install Apache tomcat 7. 
+
+### Running the Project:
+1. To run the front end server check branch ui-angular (below).
+2. To run the backend server check branch RestAPI (below).
+3. To run the pipeline check check branch pipeline (below).
+
 ### Branch: Master
 This branch contains the progress of the project uptill Sprint 3, the first version of Boston Now. For the latest files please use Branch ui-angular !
-Contents ->
- * Run app.js for the The NodeJS front end server. 
- * Index.html for the User interface.
- * messenger.war is the Jersey Java api 
+
+ * app.js for the The NodeJS front end server. 
+ * index.html for the User interface.
+ * messenger.war for the Jersey Java api 
  * Supporting scripts to parse and format data.
 
 
