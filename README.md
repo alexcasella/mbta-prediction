@@ -10,8 +10,22 @@ In branch ui-angular, you can fine the latest UI. Do not use the UI files from M
  
 
 ### Branch: RestAPI, the file messenger-2 is the Restful API.
+RestAPI is used to recieve user request from the front end server, and use the information to query the database and send it back to dront end.
 It can be opened in Eclipse luna IDE and our java SE version is 1.7.0_79.
 By extracting the file as  a .war file, we can deploy it on AWS Elastic Beanstalk, the Configuration is 64bit Amazon Linux 2015.09 v2.0.8 running Tomcat 8 Java 8. It provides us the URL to get access to our database.
+The alerts and predictions can be accessed by the following urls with different extentions:
+1. Time prediction:
+  http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/AllPrediction/LineColor/StartStopid/EndStopid
+2. Time prediction over an hour:
+  http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/AllPrediction/LineColor/StartStopid/EndStopid/Time
+3. Alert Header:
+  http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/Allalerts/headers/StartStopid/EndStopid
+4. Alert Detail:
+  http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/Allalerts/detail/StartStopid/EndStopid
+5. Path suggestion:
+  http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/Allalerts/StartStopid/EndStopid
+
+
 
 ### Branch: backend, the file MBTAProj is the backend and database program.
 It can be opened in Eclipse luna IDE and our java SE version is 1.7.0_79.
