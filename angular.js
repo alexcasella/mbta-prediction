@@ -88,7 +88,8 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-	// This will be sent to the FE server
+	$scope.menu = ['one', 'two'];
+
 	$scope.pickedColor = 'default';
 	$scope.pickedSubline = '';
 	$scope.pickedDirection = '';
@@ -195,8 +196,9 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 		{"stopName": "Massachusetts Ave.", "stopID": "70012"}]
 	};
 
+
 	$scope.setStopSelection = function() {
-		if ($scope.pickedColor && $scope.pickedSubline && $scope.pickedDirection) { // Green line
+		if ($scope.pickedColor == 'Green') { // Green line
 
 			// console.log($scope.pickedColor + $scope.pickedSubline + $scope.pickedDirection);
 			// console.log(stops[$scope.pickedColor + $scope.pickedSubline + $scope.pickedDirection]);
@@ -210,7 +212,7 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 	}
 
 	$scope.setStopSelectionSwitched = function() {
-		if ($scope.pickedColorSwitched && $scope.pickedSublineSwitched && $scope.pickedDirectionSwitched) {
+		if ($scope.pickedColorSwitched == 'Green') {
 
 			$scope.stopSelectionSwitched = stops[$scope.pickedColorSwitched + $scope.pickedSublineSwitched + $scope.pickedDirectionSwitched];
 
@@ -268,7 +270,7 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 	}
 
 	if (params.startStop) {
-		if ($scope.pickedColor !== 'default' && $scope.pickedSubline && $scope.pickedDirection) { 
+		if ($scope.pickedColor == 'Green') { 
 
 			$scope.stopSelection = stops[$scope.pickedColor + $scope.pickedSubline + $scope.pickedDirection];
 
@@ -281,7 +283,7 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 	}
 
 	if (params.endStop) {
-		if ($scope.pickedColor !== 'default' && $scope.pickedSubline && $scope.pickedDirection) { 
+		if ($scope.pickedColor !== 'default' && $scope.pickedColor == 'Green') { 
 
 			$scope.stopSelection = stops[$scope.pickedColor + $scope.pickedSubline + $scope.pickedDirection];
 
@@ -310,7 +312,7 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 	}
 
 	if (params.switchLines === 'yes' && params.endStop) {
-		if ($scope.switchLines && $scope.pickedColorSwitched && $scope.pickedSublineSwitched && $scope.pickedDirectionSwitched) { 
+		if ($scope.switchLines && $scope.pickedColorSwitched == "Green") { 
 
 			$scope.stopSelectionSwitched = stops[$scope.pickedColorSwitched + $scope.pickedSublineSwitched + $scope.pickedDirectionSwitched];
 
@@ -334,8 +336,17 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 		// This makes url dynamic
 		$location.search('timeOfDay', $scope.pickedTimeOfDay);
 		$location.search('time', $scope.pickedTime);
+		
+
 		$location.search('line', $scope.pickedColor);
-		$location.search('subline', $scope.pickedSubline);
+		
+		if ($scope.pickedColor != 'Green'){
+			$scope.pickedSubline = '';
+			$location.search('subline', '');
+		} else {
+			$location.search('subline', $scope.pickedSubline);
+		}
+
 		$location.search('direction', $scope.pickedDirection);
 		$location.search('startStop', $scope.pickedStartStop);
 		$location.search('switchLines', $scope.switchLines);
@@ -344,7 +355,7 @@ app.controller('MainCtrl', ['$scope', '$state', '$location' ,'frontend_server', 
 		$location.search('direction2', $scope.pickedDirectionSwitched);
 		$location.search('endStop', $scope.pickedEndStop);
 		
-
+		
 		frontend_server.getResults(
 			$scope.pickedColor, $scope.pickedSubline, $scope.pickedDirection, 
 			$scope.pickedStartStop, $scope.pickedEndStop, $scope.pickedTime, 
