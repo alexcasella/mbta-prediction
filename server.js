@@ -41,6 +41,7 @@ app.get("/results", function (req, res) {
 
 	var alertHeader = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/Allalerts/header/' + req.query.startStop + '/' + req.query.endStop;
 	var alertDetail = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/Allalerts/detail/' + req.query.startStop + '/' + req.query.endStop;
+	var transfer = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/Allalerts/' + req.query.startStop + '/' + req.query.endStop;
 
 	if (req.query.subline && req.query.time) {
 		var prediction = 'http://messenger-env.us-west-2.elasticbeanstalk.com/webapi/AllPrediction/' + req.query.line + req.query.subline + '/' + req.query.startStop + '/' + req.query.endStop + '/' + req.query.time;
@@ -54,9 +55,10 @@ app.get("/results", function (req, res) {
 
 
 	console.log("----------------------------------------------------------------------------------------------------------------------------");
-	console.log("Alert Header API: " + alertHeader); 
-	console.log("Alert Detail API: " + alertDetail);
-	console.log("Prediction API:   " + prediction);
+	console.log("Alert Header API:  " + alertHeader); 
+	console.log("Alert Detail API:  " + alertDetail);
+	console.log("Transfer Stops API:" + transfer);
+	console.log("Prediction API:    " + prediction);
 	console.log("----------------------------------------------------------------------------------------------------------------------------");
 
 
@@ -65,31 +67,64 @@ app.get("/results", function (req, res) {
 		if (!error && response.statusCode == 200) {
 
 			console.log(alertHeader);
+			console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
 			request(alertDetail, function (error, response, alertDetail) { //might need to type cast query as string as requst is expecting a string
 
 				if (!error && response.statusCode == 200) {
 				
 					console.log(alertDetail);
+					console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-					request(prediction, function (error, response, prediction) { //might need to type cast query as string as requst is expecting a string
+					request(transfer, function (error, response, transfer) { //might need to type cast query as string as requst is expecting a string
 					
 					    if (!error && response.statusCode == 200) {
 					        
-					        console.log(prediction);
+					        console.log(transfer);
+					        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-							res.json({
-								TimeOfDay: req.query.timeOfDay,
-								Time: req.query.time,
-								Color: req.query.line, 
-								Line: req.query.subline,
-								Direction: req.query.direction,
-								StartStop: req.query.startStop, 
-								EndStop: req.query.endStop,
-								AlertHeader: alertHeader,
-								AlertDetail: alertDetail,
-								Prediction: prediction
-							});
+								request(prediction, function (error, response, prediction) { //might need to type cast query as string as requst is expecting a string
+					
+								    if (!error && response.statusCode == 200) {
+								        
+								        console.log(prediction);
+								        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+										res.json({
+											TimeOfDay: req.query.timeOfDay,
+											Time: req.query.time,
+											Color: req.query.line, 
+											Line: req.query.subline,
+											Direction: req.query.direction,
+											StartStop: req.query.startStop, 
+											EndStop: req.query.endStop,
+											AlertHeader: alertHeader,
+											AlertDetail: alertDetail,
+											Transfer: transfer,
+											Prediction: prediction
+										});
+
+								    } else {
+
+								    	if (res.json.error == null) {
+											res.json.error == "Our service is down at this time, please try again later :( ";
+										} 
+
+								    	console.log(error);
+
+								    	res.json({
+								    		TimeOfDay: req.query.timeOfDay,
+								    		Time: req.query.time,
+											Color: req.query.line, 
+											Line: req.query.subline,
+											Direction: req.query.direction,
+											StartStop: req.query.startStop, 
+											EndStop: req.query.endStop,
+											Error: error
+										});
+
+								    }
+								});
 
 					    } else {
 
